@@ -4,29 +4,27 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 var vue = require('vue');
 var lodashUnified = require('lodash-unified');
-require('../../../../directives/index.js');
 var index$1 = require('../../../scrollbar/index.js');
 var index$2 = require('../../../icon/index.js');
 var iconsVue = require('@element-plus/icons-vue');
-require('../../../../hooks/index.js');
-require('../../../../utils/index.js');
 var constants = require('../constants.js');
 var utils = require('../utils.js');
 var basicTimeSpinner = require('../props/basic-time-spinner.js');
 var useTimePicker = require('../composables/use-time-picker.js');
 var pluginVue_exportHelper = require('../../../../_virtual/plugin-vue_export-helper.js');
+var index$3 = require('../../../../directives/repeat-click/index.js');
 var index = require('../../../../hooks/use-namespace/index.js');
 var style = require('../../../../utils/dom/style.js');
-var index$3 = require('../../../../directives/repeat-click/index.js');
+var types = require('../../../../utils/types.js');
 
-const _hoisted_1 = ["onClick"];
-const _hoisted_2 = ["onMouseenter"];
 const _sfc_main = /* @__PURE__ */ vue.defineComponent({
   __name: "basic-time-spinner",
   props: basicTimeSpinner.basicTimeSpinnerProps,
   emits: ["change", "select-range", "set-option"],
   setup(__props, { emit }) {
     const props = __props;
+    const pickerBase = vue.inject("EP_PICKER_BASE");
+    const { isRange } = pickerBase.props;
     const ns = index.useNamespace("time");
     const { getHoursList, getMinutesList, getSecondsList } = useTimePicker.getTimeLists(props.disabledHours, props.disabledMinutes, props.disabledSeconds);
     let isScrolling = false;
@@ -51,10 +49,12 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
     });
     const timeList = vue.computed(() => {
       const { hours, minutes } = vue.unref(timePartials);
+      const { role, spinnerDate } = props;
+      const compare = !isRange ? spinnerDate : void 0;
       return {
-        hours: getHoursList(props.role),
-        minutes: getMinutesList(hours, props.role),
-        seconds: getSecondsList(hours, minutes, props.role)
+        hours: getHoursList(role, compare),
+        minutes: getMinutesList(hours, role, compare),
+        seconds: getSecondsList(hours, minutes, role, compare)
       };
     });
     const arrowControlTimeList = vue.computed(() => {
@@ -175,9 +175,12 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
       }
     };
     const handleScroll = (type) => {
+      const scrollbar = vue.unref(listRefsMap[type]);
+      if (!scrollbar)
+        return;
       isScrolling = true;
       debouncedResetScroll(type);
-      const value = Math.min(Math.round((getScrollbarElement(vue.unref(listRefsMap[type]).$el).scrollTop - (scrollBarHeight(type) * 0.5 - 10) / typeItemHeight(type) + 3) / typeItemHeight(type)), type === "hours" ? 23 : 59);
+      const value = Math.min(Math.round((getScrollbarElement(scrollbar.$el).scrollTop - (scrollBarHeight(type) * 0.5 - 10) / typeItemHeight(type) + 3) / typeItemHeight(type)), type === "hours" ? 23 : 59);
       modifyDateField(type, value);
     };
     const scrollBarHeight = (type) => {
@@ -205,7 +208,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
       });
     });
     const setRef = (scrollbar, type) => {
-      listRefsMap[type].value = scrollbar;
+      listRefsMap[type].value = scrollbar != null ? scrollbar : void 0;
     };
     emit("set-option", [`${props.role}_scrollDown`, scrollDown]);
     emit("set-option", [`${props.role}_emitSelectRange`, emitSelectRange]);
@@ -247,7 +250,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
                   ], 64)) : (vue.openBlock(), vue.createElementBlock(vue.Fragment, { key: 1 }, [
                     vue.createTextVNode(vue.toDisplayString(("0" + key).slice(-2)), 1)
                   ], 64))
-                ], 10, _hoisted_1);
+                ], 10, ["onClick"]);
               }), 128))
             ]),
             _: 2
@@ -291,7 +294,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
                     vue.unref(ns).is("disabled", vue.unref(timeList)[item][time])
                   ])
                 }, [
-                  typeof time === "number" ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, { key: 0 }, [
+                  vue.unref(types.isNumber)(time) ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, { key: 0 }, [
                     item === "hours" ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, { key: 0 }, [
                       vue.createTextVNode(vue.toDisplayString(("0" + (_ctx.amPmMode ? time % 12 || 12 : time)).slice(-2)) + vue.toDisplayString(getAmPmFlag(time)), 1)
                     ], 64)) : (vue.openBlock(), vue.createElementBlock(vue.Fragment, { key: 1 }, [
@@ -301,7 +304,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
                 ], 2);
               }), 128))
             ], 2)
-          ], 42, _hoisted_2);
+          ], 42, ["onMouseenter"]);
         }), 128)) : vue.createCommentVNode("v-if", true)
       ], 2);
     };

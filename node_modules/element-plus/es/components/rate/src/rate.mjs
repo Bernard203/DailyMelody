@@ -1,11 +1,9 @@
 import { StarFilled, Star } from '@element-plus/icons-vue';
-import '../../../constants/index.mjs';
-import '../../../utils/index.mjs';
-import '../../../hooks/index.mjs';
 import { buildProps, definePropType } from '../../../utils/vue/props/runtime.mjs';
 import { mutable } from '../../../utils/typescript.mjs';
 import { iconPropType } from '../../../utils/vue/icon.mjs';
 import { useSizeProp } from '../../../hooks/use-size/index.mjs';
+import { useAriaProps } from '../../../hooks/use-aria/index.mjs';
 import { CHANGE_EVENT, UPDATE_MODEL_EVENT } from '../../../constants/event.mjs';
 import { isNumber } from '../../../utils/types.mjs';
 
@@ -77,14 +75,8 @@ const rateProps = buildProps({
     default: "{value}"
   },
   size: useSizeProp,
-  label: {
-    type: String,
-    default: void 0
-  },
-  clearable: {
-    type: Boolean,
-    default: false
-  }
+  clearable: Boolean,
+  ...useAriaProps(["ariaLabel"])
 });
 const rateEmits = {
   [CHANGE_EVENT]: (value) => isNumber(value),

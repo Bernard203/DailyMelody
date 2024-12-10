@@ -1,7 +1,6 @@
 import { isVNode, Fragment, Text, Comment, openBlock, createBlock, createCommentVNode } from 'vue';
-import { hasOwn, camelize, isArray } from '@vue/shared';
-import '../objects.mjs';
 import { debugWarn } from '../error.mjs';
+import { isArray, hasOwn, camelize } from '@vue/shared';
 
 const SCOPE = "utils/vue/vnode";
 var PatchFlags = /* @__PURE__ */ ((PatchFlags2) => {
@@ -45,7 +44,7 @@ function getChildren(node, depth) {
   return node;
 }
 const getFirstValidNode = (nodes, maxDepth = 3) => {
-  if (Array.isArray(nodes)) {
+  if (isArray(nodes)) {
     return getChildren(nodes[0], maxDepth);
   } else {
     return getChildren(nodes, maxDepth);
@@ -88,13 +87,12 @@ const flattedChildren = (children) => {
     var _a;
     if (isArray(child)) {
       result.push(...flattedChildren(child));
+    } else if (isVNode(child) && ((_a = child.component) == null ? void 0 : _a.subTree)) {
+      result.push(child, ...flattedChildren(child.component.subTree));
     } else if (isVNode(child) && isArray(child.children)) {
       result.push(...flattedChildren(child.children));
     } else {
       result.push(child);
-      if (isVNode(child) && ((_a = child.component) == null ? void 0 : _a.subTree)) {
-        result.push(...flattedChildren(child.component.subTree));
-      }
     }
   });
   return result;

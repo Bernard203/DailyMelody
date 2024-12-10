@@ -4,13 +4,13 @@ import { useProps } from './useProps.mjs';
 function useAllowCreate(props, states) {
   const { aliasProps, getLabel, getValue } = useProps(props);
   const createOptionCount = ref(0);
-  const cachedSelectedOption = ref(null);
+  const cachedSelectedOption = ref();
   const enableAllowCreateMode = computed(() => {
     return props.allowCreate && props.filterable;
   });
   function hasExistingOption(query) {
-    const hasValue = (option) => getValue(option) === query;
-    return props.options && props.options.some(hasValue) || states.createdOptions.some(hasValue);
+    const hasOption = (option) => getLabel(option) === query;
+    return props.options && props.options.some(hasOption) || states.createdOptions.some(hasOption);
   }
   function selectNewOption(option) {
     if (!enableAllowCreateMode.value) {

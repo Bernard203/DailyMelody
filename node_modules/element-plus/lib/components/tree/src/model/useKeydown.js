@@ -4,8 +4,6 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 var vue = require('vue');
 var core = require('@vueuse/core');
-require('../../../../constants/index.js');
-require('../../../../hooks/index.js');
 var index = require('../../../../hooks/use-namespace/index.js');
 var aria = require('../../../../constants/aria.js');
 
@@ -73,7 +71,7 @@ function useKeydown({ el$ }, store) {
       currentItem.click();
     }
     const hasInput = currentItem.querySelector('[type="checkbox"]');
-    if ([aria.EVENT_CODE.enter, aria.EVENT_CODE.space].includes(code) && hasInput) {
+    if ([aria.EVENT_CODE.enter, aria.EVENT_CODE.numpadEnter, aria.EVENT_CODE.space].includes(code) && hasInput) {
       ev.preventDefault();
       hasInput.click();
     }

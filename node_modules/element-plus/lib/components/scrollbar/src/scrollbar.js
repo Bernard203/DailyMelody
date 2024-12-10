@@ -2,8 +2,8 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-require('../../../utils/index.js');
 var runtime = require('../../../utils/vue/props/runtime.js');
+var index = require('../../../hooks/use-aria/index.js');
 var types = require('../../../utils/types.js');
 
 const scrollbarProps = runtime.buildProps({
@@ -45,13 +45,13 @@ const scrollbarProps = runtime.buildProps({
     type: Number,
     default: 20
   },
+  tabindex: {
+    type: [String, Number],
+    default: void 0
+  },
   id: String,
   role: String,
-  ariaLabel: String,
-  ariaOrientation: {
-    type: String,
-    values: ["horizontal", "vertical"]
-  }
+  ...index.useAriaProps(["ariaLabel", "ariaOrientation"])
 });
 const scrollbarEmits = {
   scroll: ({

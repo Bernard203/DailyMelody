@@ -3,13 +3,11 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var iconsVue = require('@element-plus/icons-vue');
-require('../../../constants/index.js');
-require('../../../utils/index.js');
-require('../../../hooks/index.js');
 var runtime = require('../../../utils/vue/props/runtime.js');
 var typescript = require('../../../utils/typescript.js');
 var icon = require('../../../utils/vue/icon.js');
 var index = require('../../../hooks/use-size/index.js');
+var index$1 = require('../../../hooks/use-aria/index.js');
 var event = require('../../../constants/event.js');
 var types = require('../../../utils/types.js');
 
@@ -81,14 +79,8 @@ const rateProps = runtime.buildProps({
     default: "{value}"
   },
   size: index.useSizeProp,
-  label: {
-    type: String,
-    default: void 0
-  },
-  clearable: {
-    type: Boolean,
-    default: false
-  }
+  clearable: Boolean,
+  ...index$1.useAriaProps(["ariaLabel"])
 });
 const rateEmits = {
   [event.CHANGE_EVENT]: (value) => types.isNumber(value),

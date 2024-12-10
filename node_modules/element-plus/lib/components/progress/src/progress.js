@@ -2,7 +2,6 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-require('../../../utils/index.js');
 var runtime = require('../../../utils/vue/props/runtime.js');
 
 const progressProps = runtime.buildProps({
@@ -21,10 +20,7 @@ const progressProps = runtime.buildProps({
     default: "",
     values: ["", "success", "exception", "warning"]
   },
-  indeterminate: {
-    type: Boolean,
-    default: false
-  },
+  indeterminate: Boolean,
   duration: {
     type: Number,
     default: 3
@@ -37,10 +33,7 @@ const progressProps = runtime.buildProps({
     type: runtime.definePropType(String),
     default: "round"
   },
-  textInside: {
-    type: Boolean,
-    default: false
-  },
+  textInside: Boolean,
   width: {
     type: Number,
     default: 126

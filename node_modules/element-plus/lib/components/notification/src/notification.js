@@ -2,7 +2,6 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-require('../../../utils/index.js');
 var runtime = require('../../../utils/vue/props/runtime.js');
 var icon = require('../../../utils/vue/icon.js');
 
@@ -17,10 +16,7 @@ const notificationProps = runtime.buildProps({
     type: String,
     default: ""
   },
-  dangerouslyUseHTMLString: {
-    type: Boolean,
-    default: false
-  },
+  dangerouslyUseHTMLString: Boolean,
   duration: {
     type: Number,
     default: 4500
@@ -33,7 +29,11 @@ const notificationProps = runtime.buildProps({
     default: ""
   },
   message: {
-    type: runtime.definePropType([String, Object]),
+    type: runtime.definePropType([
+      String,
+      Object,
+      Function
+    ]),
     default: ""
   },
   offset: {

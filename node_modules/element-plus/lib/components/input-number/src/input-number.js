@@ -3,12 +3,10 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var lodashUnified = require('lodash-unified');
-require('../../../hooks/index.js');
-require('../../../utils/index.js');
-require('../../../constants/index.js');
 var runtime = require('../../../utils/vue/props/runtime.js');
 var index = require('../../../hooks/use-size/index.js');
 var types = require('../../../utils/types.js');
+var index$1 = require('../../../hooks/use-aria/index.js');
 var event = require('../../../constants/event.js');
 
 const inputNumberProps = runtime.buildProps({
@@ -48,7 +46,6 @@ const inputNumberProps = runtime.buildProps({
     default: null
   },
   name: String,
-  label: String,
   placeholder: String,
   precision: {
     type: Number,
@@ -57,7 +54,8 @@ const inputNumberProps = runtime.buildProps({
   validateEvent: {
     type: Boolean,
     default: true
-  }
+  },
+  ...index$1.useAriaProps(["ariaLabel"])
 });
 const inputNumberEmits = {
   [event.CHANGE_EVENT]: (cur, prev) => prev !== cur,

@@ -1,5 +1,4 @@
 import { inject, ref, computed, onMounted, watch, toRef, onUnmounted } from 'vue';
-import '../../../../hooks/index.mjs';
 import { formContextKey, formItemContextKey } from '../constants.mjs';
 import { useId } from '../../../../hooks/use-id/index.mjs';
 
@@ -26,7 +25,7 @@ const useFormItemInputId = (props, {
   let idUnwatch = void 0;
   const isLabeledByFormItem = computed(() => {
     var _a;
-    return !!(!props.label && formItemContext && formItemContext.inputIds && ((_a = formItemContext.inputIds) == null ? void 0 : _a.length) <= 1);
+    return !!(!(props.label || props.ariaLabel) && formItemContext && formItemContext.inputIds && ((_a = formItemContext.inputIds) == null ? void 0 : _a.length) <= 1);
   });
   onMounted(() => {
     idUnwatch = watch([toRef(props, "id"), disableIdGeneration], ([id, disableIdGeneration2]) => {

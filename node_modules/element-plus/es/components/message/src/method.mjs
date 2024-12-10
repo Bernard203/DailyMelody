@@ -1,14 +1,12 @@
 import { isVNode, render, createVNode } from 'vue';
-import '../../../utils/index.mjs';
-import '../../config-provider/index.mjs';
 import MessageConstructor from './message2.mjs';
-import { messageDefaults, messageTypes } from './message.mjs';
+import { messageTypes, messageDefaults } from './message.mjs';
 import { instances } from './instance.mjs';
-import { isString, isFunction } from '@vue/shared';
-import { isElement, isNumber } from '../../../utils/types.mjs';
-import { debugWarn } from '../../../utils/error.mjs';
-import { isClient } from '@vueuse/core';
 import { messageConfig } from '../../config-provider/src/config-provider.mjs';
+import { isClient } from '@vueuse/core';
+import { isNumber, isElement, isBoolean } from '../../../utils/types.mjs';
+import { isString, isFunction } from '@vue/shared';
+import { debugWarn } from '../../../utils/error.mjs';
 
 let seed = 1;
 const normalizeOptions = (params) => {
@@ -26,6 +24,18 @@ const normalizeOptions = (params) => {
       appendTo = document.body;
     }
     normalized.appendTo = appendTo;
+  }
+  if (isBoolean(messageConfig.grouping) && !normalized.grouping) {
+    normalized.grouping = messageConfig.grouping;
+  }
+  if (isNumber(messageConfig.duration) && normalized.duration === 3e3) {
+    normalized.duration = messageConfig.duration;
+  }
+  if (isNumber(messageConfig.offset) && normalized.offset === 16) {
+    normalized.offset = messageConfig.offset;
+  }
+  if (isBoolean(messageConfig.showClose) && !normalized.showClose) {
+    normalized.showClose = messageConfig.showClose;
   }
   return normalized;
 };
@@ -76,9 +86,6 @@ const createMessage = ({ appendTo, ...options }, context) => {
 const message = (options = {}, context) => {
   if (!isClient)
     return { close: () => void 0 };
-  if (isNumber(messageConfig.max) && instances.length >= messageConfig.max) {
-    return { close: () => void 0 };
-  }
   const normalized = normalizeOptions(options);
   if (normalized.grouping && instances.length) {
     const instance2 = instances.find(({ vnode: vm }) => {
@@ -90,6 +97,9 @@ const message = (options = {}, context) => {
       instance2.props.type = normalized.type;
       return instance2.handler;
     }
+  }
+  if (isNumber(messageConfig.max) && instances.length >= messageConfig.max) {
+    return { close: () => void 0 };
   }
   const instance = createMessage(normalized, context);
   instances.push(instance);

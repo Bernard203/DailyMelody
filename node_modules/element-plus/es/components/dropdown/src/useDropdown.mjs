@@ -1,11 +1,8 @@
 import { inject, computed, ref } from 'vue';
-import '../../../utils/index.mjs';
-import '../../../constants/index.mjs';
-import '../../../hooks/index.mjs';
 import { useNamespace } from '../../../hooks/use-namespace/index.mjs';
 import { useId } from '../../../hooks/use-id/index.mjs';
-import { EVENT_CODE } from '../../../constants/aria.mjs';
 import { addClass } from '../../../utils/dom/style.mjs';
+import { EVENT_CODE } from '../../../constants/aria.mjs';
 
 const useDropdown = () => {
   const elDropdown = inject("elDropdown", {});
@@ -25,9 +22,7 @@ const initDropdownDomEvent = (dropdownChildren, triggerElm, _instance) => {
   function removeTabindex() {
     var _a;
     triggerElm.setAttribute("tabindex", "-1");
-    (_a = menuItemsArray.value) == null ? void 0 : _a.forEach((item) => {
-      item.setAttribute("tabindex", "-1");
-    });
+    (_a = menuItemsArray.value) == null ? void 0 : _a.forEach((item) => item.setAttribute("tabindex", "-1"));
   }
   function resetTabindex(ele) {
     removeTabindex();
@@ -41,7 +36,7 @@ const initDropdownDomEvent = (dropdownChildren, triggerElm, _instance) => {
       menuItems.value[0].focus();
       ev.preventDefault();
       ev.stopPropagation();
-    } else if (code === EVENT_CODE.enter) {
+    } else if ([EVENT_CODE.enter, EVENT_CODE.numpadEnter].includes(code)) {
       _instance.handleClick();
     } else if ([EVENT_CODE.tab, EVENT_CODE.esc].includes(code)) {
       _instance.hide();

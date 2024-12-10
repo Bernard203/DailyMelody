@@ -2,12 +2,10 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-require('../../../utils/index.js');
-require('../../popper/index.js');
-require('../../../hooks/index.js');
-var runtime = require('../../../utils/vue/props/runtime.js');
 var index = require('../../../hooks/use-delayed-toggle/index.js');
 var content = require('../../popper/src/content.js');
+var runtime = require('../../../utils/vue/props/runtime.js');
+var index$1 = require('../../../hooks/use-aria/index.js');
 
 const useTooltipContentProps = runtime.buildProps({
   ...index.useDelayedToggleProps,
@@ -19,12 +17,8 @@ const useTooltipContentProps = runtime.buildProps({
     type: String,
     default: ""
   },
-  rawContent: {
-    type: Boolean,
-    default: false
-  },
+  rawContent: Boolean,
   persistent: Boolean,
-  ariaLabel: String,
   visible: {
     type: runtime.definePropType(Boolean),
     default: null
@@ -34,7 +28,8 @@ const useTooltipContentProps = runtime.buildProps({
     type: Boolean,
     default: true
   },
-  disabled: Boolean
+  disabled: Boolean,
+  ...index$1.useAriaProps(["ariaLabel"])
 });
 
 exports.useTooltipContentProps = useTooltipContentProps;

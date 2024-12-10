@@ -4,16 +4,22 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 var vue = require('vue');
 var core = require('@vueuse/core');
-require('../../utils/index.js');
+var types = require('../../utils/types.js');
 var shared = require('@vue/shared');
 
-function useFocusController(target, { afterFocus, beforeBlur, afterBlur } = {}) {
+function useFocusController(target, {
+  beforeFocus,
+  afterFocus,
+  beforeBlur,
+  afterBlur
+} = {}) {
   const instance = vue.getCurrentInstance();
   const { emit } = instance;
   const wrapperRef = vue.shallowRef();
   const isFocused = vue.ref(false);
   const handleFocus = (event) => {
-    if (isFocused.value)
+    const cancelFocus = shared.isFunction(beforeFocus) ? beforeFocus(event) : false;
+    if (cancelFocus || isFocused.value)
       return;
     isFocused.value = true;
     emit("focus", event);
@@ -29,18 +35,31 @@ function useFocusController(target, { afterFocus, beforeBlur, afterBlur } = {}) 
     afterBlur == null ? void 0 : afterBlur();
   };
   const handleClick = () => {
-    var _a;
-    (_a = target.value) == null ? void 0 : _a.focus();
+    var _a, _b;
+    if (((_a = wrapperRef.value) == null ? void 0 : _a.contains(document.activeElement)) && wrapperRef.value !== document.activeElement)
+      return;
+    (_b = target.value) == null ? void 0 : _b.focus();
   };
   vue.watch(wrapperRef, (el) => {
     if (el) {
       el.setAttribute("tabindex", "-1");
     }
   });
-  core.useEventListener(wrapperRef, "click", handleClick);
+  core.useEventListener(wrapperRef, "focus", handleFocus, true);
+  core.useEventListener(wrapperRef, "blur", handleBlur, true);
+  core.useEventListener(wrapperRef, "click", handleClick, true);
+  if (process.env.NODE_ENV === "test") {
+    vue.onMounted(() => {
+      const targetEl = types.isElement(target.value) ? target.value : document.querySelector("input,textarea");
+      if (targetEl) {
+        core.useEventListener(targetEl, "focus", handleFocus, true);
+        core.useEventListener(targetEl, "blur", handleBlur, true);
+      }
+    });
+  }
   return {
-    wrapperRef,
     isFocused,
+    wrapperRef,
     handleFocus,
     handleBlur
   };

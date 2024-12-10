@@ -1,5 +1,4 @@
-import '../../../utils/index.mjs';
-import { buildProps } from '../../../utils/vue/props/runtime.mjs';
+import { buildProps, definePropType } from '../../../utils/vue/props/runtime.mjs';
 
 const skeletonProps = buildProps({
   animated: {
@@ -19,7 +18,7 @@ const skeletonProps = buildProps({
     default: true
   },
   throttle: {
-    type: Number
+    type: definePropType([Number, Object])
   }
 });
 

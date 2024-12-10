@@ -3,9 +3,8 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var vue = require('vue');
-var shared = require('@vue/shared');
-require('../objects.js');
 var error = require('../error.js');
+var shared = require('@vue/shared');
 
 const SCOPE = "utils/vue/vnode";
 var PatchFlags = /* @__PURE__ */ ((PatchFlags2) => {
@@ -49,7 +48,7 @@ function getChildren(node, depth) {
   return node;
 }
 const getFirstValidNode = (nodes, maxDepth = 3) => {
-  if (Array.isArray(nodes)) {
+  if (shared.isArray(nodes)) {
     return getChildren(nodes[0], maxDepth);
   } else {
     return getChildren(nodes, maxDepth);
@@ -92,13 +91,12 @@ const flattedChildren = (children) => {
     var _a;
     if (shared.isArray(child)) {
       result.push(...flattedChildren(child));
+    } else if (vue.isVNode(child) && ((_a = child.component) == null ? void 0 : _a.subTree)) {
+      result.push(child, ...flattedChildren(child.component.subTree));
     } else if (vue.isVNode(child) && shared.isArray(child.children)) {
       result.push(...flattedChildren(child.children));
     } else {
       result.push(child);
-      if (vue.isVNode(child) && ((_a = child.component) == null ? void 0 : _a.subTree)) {
-        result.push(...flattedChildren(child.component.subTree));
-      }
     }
   });
   return result;

@@ -1,4 +1,3 @@
-import '../../../utils/index.mjs';
 import { buildProps, definePropType } from '../../../utils/vue/props/runtime.mjs';
 
 const tourStrategies = ["absolute", "fixed"];
@@ -45,5 +44,5 @@ const tourContentEmits = {
   close: () => true
 };
 
-export { tourContentEmits, tourContentProps };
+export { tourContentEmits, tourContentProps, tourPlacements, tourStrategies };
 //# sourceMappingURL=content.mjs.map

@@ -1,10 +1,8 @@
 import { isNil } from 'lodash-unified';
-import '../../../hooks/index.mjs';
-import '../../../utils/index.mjs';
-import '../../../constants/index.mjs';
 import { buildProps } from '../../../utils/vue/props/runtime.mjs';
 import { useSizeProp } from '../../../hooks/use-size/index.mjs';
 import { isNumber } from '../../../utils/types.mjs';
+import { useAriaProps } from '../../../hooks/use-aria/index.mjs';
 import { CHANGE_EVENT, INPUT_EVENT, UPDATE_MODEL_EVENT } from '../../../constants/event.mjs';
 
 const inputNumberProps = buildProps({
@@ -44,7 +42,6 @@ const inputNumberProps = buildProps({
     default: null
   },
   name: String,
-  label: String,
   placeholder: String,
   precision: {
     type: Number,
@@ -53,7 +50,8 @@ const inputNumberProps = buildProps({
   validateEvent: {
     type: Boolean,
     default: true
-  }
+  },
+  ...useAriaProps(["ariaLabel"])
 });
 const inputNumberEmits = {
   [CHANGE_EVENT]: (cur, prev) => prev !== cur,

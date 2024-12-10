@@ -3,7 +3,6 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var vue = require('vue');
-require('../../../../hooks/index.js');
 var constants = require('../constants.js');
 var index = require('../../../../hooks/use-id/index.js');
 
@@ -30,7 +29,7 @@ const useFormItemInputId = (props, {
   let idUnwatch = void 0;
   const isLabeledByFormItem = vue.computed(() => {
     var _a;
-    return !!(!props.label && formItemContext && formItemContext.inputIds && ((_a = formItemContext.inputIds) == null ? void 0 : _a.length) <= 1);
+    return !!(!(props.label || props.ariaLabel) && formItemContext && formItemContext.inputIds && ((_a = formItemContext.inputIds) == null ? void 0 : _a.length) <= 1);
   });
   vue.onMounted(() => {
     idUnwatch = vue.watch([vue.toRef(props, "id"), disableIdGeneration], ([id, disableIdGeneration2]) => {

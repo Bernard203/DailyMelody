@@ -2,7 +2,6 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-require('../../../utils/index.js');
 var runtime = require('../../../utils/vue/props/runtime.js');
 
 const tourStrategies = ["absolute", "fixed"];
@@ -51,4 +50,6 @@ const tourContentEmits = {
 
 exports.tourContentEmits = tourContentEmits;
 exports.tourContentProps = tourContentProps;
+exports.tourPlacements = tourPlacements;
+exports.tourStrategies = tourStrategies;
 //# sourceMappingURL=content.js.map

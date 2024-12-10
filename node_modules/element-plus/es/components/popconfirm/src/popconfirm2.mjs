@@ -1,9 +1,7 @@
-import { defineComponent, ref, computed, openBlock, createBlock, unref, mergeProps, withCtx, createElementVNode, normalizeClass, normalizeStyle, resolveDynamicComponent, createCommentVNode, createTextVNode, toDisplayString, createVNode, renderSlot } from 'vue';
+import { defineComponent, ref, computed, openBlock, createBlock, unref, mergeProps, withCtx, createElementVNode, normalizeClass, normalizeStyle, resolveDynamicComponent, createCommentVNode, createTextVNode, toDisplayString, renderSlot, createVNode } from 'vue';
 import { ElButton } from '../../button/index.mjs';
 import { ElIcon } from '../../icon/index.mjs';
 import { ElTooltip } from '../../tooltip/index.mjs';
-import '../../../hooks/index.mjs';
-import '../../../utils/index.mjs';
 import { popconfirmProps, popconfirmEmits } from './popconfirm.mjs';
 import _export_sfc from '../../../_virtual/plugin-vue_export-helper.mjs';
 import { useLocale } from '../../../hooks/use-locale/index.mjs';
@@ -77,28 +75,33 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
             createElementVNode("div", {
               class: normalizeClass(unref(ns).e("action"))
             }, [
-              createVNode(unref(ElButton), {
-                size: "small",
-                type: _ctx.cancelButtonType === "text" ? "" : _ctx.cancelButtonType,
-                text: _ctx.cancelButtonType === "text",
-                onClick: cancel
-              }, {
-                default: withCtx(() => [
-                  createTextVNode(toDisplayString(unref(finalCancelButtonText)), 1)
-                ]),
-                _: 1
-              }, 8, ["type", "text"]),
-              createVNode(unref(ElButton), {
-                size: "small",
-                type: _ctx.confirmButtonType === "text" ? "" : _ctx.confirmButtonType,
-                text: _ctx.confirmButtonType === "text",
-                onClick: confirm
-              }, {
-                default: withCtx(() => [
-                  createTextVNode(toDisplayString(unref(finalConfirmButtonText)), 1)
-                ]),
-                _: 1
-              }, 8, ["type", "text"])
+              renderSlot(_ctx.$slots, "actions", {
+                confirm,
+                cancel
+              }, () => [
+                createVNode(unref(ElButton), {
+                  size: "small",
+                  type: _ctx.cancelButtonType === "text" ? "" : _ctx.cancelButtonType,
+                  text: _ctx.cancelButtonType === "text",
+                  onClick: cancel
+                }, {
+                  default: withCtx(() => [
+                    createTextVNode(toDisplayString(unref(finalCancelButtonText)), 1)
+                  ]),
+                  _: 1
+                }, 8, ["type", "text"]),
+                createVNode(unref(ElButton), {
+                  size: "small",
+                  type: _ctx.confirmButtonType === "text" ? "" : _ctx.confirmButtonType,
+                  text: _ctx.confirmButtonType === "text",
+                  onClick: confirm
+                }, {
+                  default: withCtx(() => [
+                    createTextVNode(toDisplayString(unref(finalConfirmButtonText)), 1)
+                  ]),
+                  _: 1
+                }, 8, ["type", "text"])
+              ])
             ], 2)
           ], 2)
         ]),

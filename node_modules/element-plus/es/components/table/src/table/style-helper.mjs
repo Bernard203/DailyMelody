@@ -1,6 +1,5 @@
 import { ref, watchEffect, watch, unref, computed, onMounted, nextTick } from 'vue';
 import { useEventListener, useResizeObserver } from '@vueuse/core';
-import '../../../form/index.mjs';
 import { useFormSize } from '../../../form/src/hooks/use-form-common-props.mjs';
 
 function useStyle(props, layout, store, table) {
@@ -224,19 +223,6 @@ function useStyle(props, layout, store, table) {
       height
     };
   });
-  const tableInnerStyle = computed(() => {
-    if (props.height) {
-      return {
-        height: !Number.isNaN(Number(props.height)) ? `${props.height}px` : props.height
-      };
-    }
-    if (props.maxHeight) {
-      return {
-        maxHeight: !Number.isNaN(Number(props.maxHeight)) ? `${props.maxHeight}px` : props.maxHeight
-      };
-    }
-    return {};
-  });
   const scrollbarStyle = computed(() => {
     if (props.height) {
       return {
@@ -288,7 +274,6 @@ function useStyle(props, layout, store, table) {
     tableBodyStyles,
     tableLayout,
     scrollbarViewStyle,
-    tableInnerStyle,
     scrollbarStyle
   };
 }

@@ -1,7 +1,6 @@
 import { defineComponent, computed, openBlock, createBlock, Transition, unref, withCtx, createElementBlock, normalizeStyle, normalizeClass, withModifiers, renderSlot, createVNode, createCommentVNode } from 'vue';
 import { ElIcon } from '../../icon/index.mjs';
 import { CaretTop } from '@element-plus/icons-vue';
-import '../../../hooks/index.mjs';
 import { backtopProps, backtopEmits } from './backtop.mjs';
 import { useBackTop } from './use-backtop.mjs';
 import _export_sfc from '../../../_virtual/plugin-vue_export-helper.mjs';
@@ -32,7 +31,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
             key: 0,
             style: normalizeStyle(unref(backTopStyle)),
             class: normalizeClass(unref(ns).b()),
-            onClick: _cache[0] || (_cache[0] = withModifiers((...args) => unref(handleClick) && unref(handleClick)(...args), ["stop"]))
+            onClick: withModifiers(unref(handleClick), ["stop"])
           }, [
             renderSlot(_ctx.$slots, "default", {}, () => [
               createVNode(unref(ElIcon), {
@@ -44,7 +43,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
                 _: 1
               }, 8, ["class"])
             ])
-          ], 6)) : createCommentVNode("v-if", true)
+          ], 14, ["onClick"])) : createCommentVNode("v-if", true)
         ]),
         _: 3
       }, 8, ["name"]);

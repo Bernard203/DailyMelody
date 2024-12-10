@@ -141,7 +141,9 @@ function useCheck(props, tree) {
   function setCheckedKeys(keys) {
     checkedKeys.value.clear();
     indeterminateKeys.value.clear();
-    _setCheckedKeys(keys);
+    vue.nextTick(() => {
+      _setCheckedKeys(keys);
+    });
   }
   function setChecked(key, isChecked2) {
     if ((tree == null ? void 0 : tree.value) && props.showCheckbox) {

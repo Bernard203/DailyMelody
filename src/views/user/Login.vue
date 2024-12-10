@@ -105,7 +105,7 @@ function handleLogin() {
 }
 
 .bgimage {
-  background-image: url("../../assets/shopping-1s-1084px.svg");
+  background-image: url("../../../public/background.webp");
 }
 
 .login-card {

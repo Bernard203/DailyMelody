@@ -4,7 +4,7 @@ declare const _default: import("vue").DefineComponent<{
      */
     value: {
         required: true;
-        type: (ObjectConstructor | NumberConstructor | BooleanConstructor | StringConstructor)[];
+        type: (ObjectConstructor | NumberConstructor | StringConstructor | BooleanConstructor)[];
     };
     /**
      * @description label of option, same as `value` if omitted
@@ -19,12 +19,12 @@ declare const _default: import("vue").DefineComponent<{
     ns: {
         namespace: import("vue").ComputedRef<string>;
         b: (blockSuffix?: string) => string;
-        e: (element?: string | undefined) => string;
-        m: (modifier?: string | undefined) => string;
-        be: (blockSuffix?: string | undefined, element?: string | undefined) => string;
-        em: (element?: string | undefined, modifier?: string | undefined) => string;
-        bm: (blockSuffix?: string | undefined, modifier?: string | undefined) => string;
-        bem: (blockSuffix?: string | undefined, element?: string | undefined, modifier?: string | undefined) => string;
+        e: (element?: string) => string;
+        m: (modifier?: string) => string;
+        be: (blockSuffix?: string, element?: string) => string;
+        em: (element?: string, modifier?: string) => string;
+        bm: (blockSuffix?: string, modifier?: string) => string;
+        bem: (blockSuffix?: string, element?: string, modifier?: string) => string;
         is: {
             (name: string, state: boolean | undefined): string;
             (name: string): string;
@@ -57,7 +57,7 @@ declare const _default: import("vue").DefineComponent<{
      */
     value: {
         required: true;
-        type: (ObjectConstructor | NumberConstructor | BooleanConstructor | StringConstructor)[];
+        type: (ObjectConstructor | NumberConstructor | StringConstructor | BooleanConstructor)[];
     };
     /**
      * @description label of option, same as `value` if omitted

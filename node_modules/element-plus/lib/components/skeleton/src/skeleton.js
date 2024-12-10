@@ -2,7 +2,6 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-require('../../../utils/index.js');
 var runtime = require('../../../utils/vue/props/runtime.js');
 
 const skeletonProps = runtime.buildProps({
@@ -23,7 +22,7 @@ const skeletonProps = runtime.buildProps({
     default: true
   },
   throttle: {
-    type: Number
+    type: runtime.definePropType([Number, Object])
   }
 });
 

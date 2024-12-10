@@ -3,7 +3,6 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var vue = require('vue');
-require('../../../hooks/index.js');
 var useOption = require('./useOption.js');
 var pluginVue_exportHelper = require('../../../_virtual/plugin-vue_export-helper.js');
 var index = require('../../../hooks/use-namespace/index.js');
@@ -49,8 +48,7 @@ const _sfc_main = vue.defineComponent({
     select.onOptionCreate(vm);
     vue.onBeforeUnmount(() => {
       const key = vm.value;
-      const { selected } = select.states;
-      const selectedOptions = select.props.multiple ? selected : [selected];
+      const { selected: selectedOptions } = select.states;
       const doesSelected = selectedOptions.some((item) => {
         return item.value === vm.value;
       });
@@ -62,7 +60,7 @@ const _sfc_main = vue.defineComponent({
       select.onOptionDestroy(key, vm);
     });
     function selectOptionClick() {
-      if (props.disabled !== true && states.groupDisabled !== true) {
+      if (!isDisabled.value) {
         select.handleOptionSelect(vm);
       }
     }
@@ -83,7 +81,6 @@ const _sfc_main = vue.defineComponent({
     };
   }
 });
-const _hoisted_1 = ["id", "aria-disabled", "aria-selected"];
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   return vue.withDirectives((vue.openBlock(), vue.createElementBlock("li", {
     id: _ctx.id,
@@ -91,13 +88,13 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     role: "option",
     "aria-disabled": _ctx.isDisabled || void 0,
     "aria-selected": _ctx.itemSelected,
-    onMouseenter: _cache[0] || (_cache[0] = (...args) => _ctx.hoverItem && _ctx.hoverItem(...args)),
-    onClick: _cache[1] || (_cache[1] = vue.withModifiers((...args) => _ctx.selectOptionClick && _ctx.selectOptionClick(...args), ["stop"]))
+    onMousemove: _ctx.hoverItem,
+    onClick: vue.withModifiers(_ctx.selectOptionClick, ["stop"])
   }, [
     vue.renderSlot(_ctx.$slots, "default", {}, () => [
       vue.createElementVNode("span", null, vue.toDisplayString(_ctx.currentLabel), 1)
     ])
-  ], 42, _hoisted_1)), [
+  ], 42, ["id", "aria-disabled", "aria-selected", "onMousemove", "onClick"])), [
     [vue.vShow, _ctx.visible]
   ]);
 }

@@ -3,8 +3,8 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var core = require('@popperjs/core');
-require('../../../utils/index.js');
 var runtime = require('../../../utils/vue/props/runtime.js');
+var index = require('../../../hooks/use-aria/index.js');
 
 const POSITIONING_STRATEGIES = ["fixed", "absolute"];
 const popperCoreConfigProps = runtime.buildProps({
@@ -49,7 +49,7 @@ const popperContentProps = runtime.buildProps({
     type: runtime.definePropType([String, Array, Object])
   },
   effect: {
-    type: String,
+    type: runtime.definePropType(String),
     default: "dark"
   },
   visible: Boolean,
@@ -82,12 +82,9 @@ const popperContentProps = runtime.buildProps({
     type: Boolean,
     default: true
   },
-  ariaLabel: {
-    type: String,
-    default: void 0
-  },
   virtualTriggering: Boolean,
-  zIndex: Number
+  zIndex: Number,
+  ...index.useAriaProps(["ariaLabel"])
 });
 const popperContentEmits = {
   mouseenter: (evt) => evt instanceof MouseEvent,

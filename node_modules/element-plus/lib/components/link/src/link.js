@@ -2,7 +2,6 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-require('../../../utils/index.js');
 var runtime = require('../../../utils/vue/props/runtime.js');
 var icon = require('../../../utils/vue/icon.js');
 
@@ -16,7 +15,7 @@ const linkProps = runtime.buildProps({
     type: Boolean,
     default: true
   },
-  disabled: { type: Boolean, default: false },
+  disabled: Boolean,
   href: { type: String, default: "" },
   target: {
     type: String,

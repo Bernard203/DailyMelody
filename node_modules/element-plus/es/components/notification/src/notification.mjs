@@ -1,4 +1,3 @@
-import '../../../utils/index.mjs';
 import { buildProps, definePropType } from '../../../utils/vue/props/runtime.mjs';
 import { iconPropType } from '../../../utils/vue/icon.mjs';
 
@@ -13,10 +12,7 @@ const notificationProps = buildProps({
     type: String,
     default: ""
   },
-  dangerouslyUseHTMLString: {
-    type: Boolean,
-    default: false
-  },
+  dangerouslyUseHTMLString: Boolean,
   duration: {
     type: Number,
     default: 4500
@@ -29,7 +25,11 @@ const notificationProps = buildProps({
     default: ""
   },
   message: {
-    type: definePropType([String, Object]),
+    type: definePropType([
+      String,
+      Object,
+      Function
+    ]),
     default: ""
   },
   offset: {

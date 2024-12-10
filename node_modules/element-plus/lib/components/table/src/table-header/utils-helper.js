@@ -80,5 +80,6 @@ function useUtils(props) {
   };
 }
 
+exports.convertToRows = convertToRows;
 exports["default"] = useUtils;
 //# sourceMappingURL=utils-helper.js.map

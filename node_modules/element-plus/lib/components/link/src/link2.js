@@ -4,12 +4,10 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 var vue = require('vue');
 var index$1 = require('../../icon/index.js');
-require('../../../hooks/index.js');
 var link = require('./link.js');
 var pluginVue_exportHelper = require('../../../_virtual/plugin-vue_export-helper.js');
 var index = require('../../../hooks/use-namespace/index.js');
 
-const _hoisted_1 = ["href", "target"];
 const __default__ = vue.defineComponent({
   name: "ElLink"
 });
@@ -50,7 +48,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
           vue.renderSlot(_ctx.$slots, "default")
         ], 2)) : vue.createCommentVNode("v-if", true),
         _ctx.$slots.icon ? vue.renderSlot(_ctx.$slots, "icon", { key: 2 }) : vue.createCommentVNode("v-if", true)
-      ], 10, _hoisted_1);
+      ], 10, ["href", "target"]);
     };
   }
 });

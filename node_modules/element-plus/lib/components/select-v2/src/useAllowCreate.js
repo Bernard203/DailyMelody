@@ -8,13 +8,13 @@ var useProps = require('./useProps.js');
 function useAllowCreate(props, states) {
   const { aliasProps, getLabel, getValue } = useProps.useProps(props);
   const createOptionCount = vue.ref(0);
-  const cachedSelectedOption = vue.ref(null);
+  const cachedSelectedOption = vue.ref();
   const enableAllowCreateMode = vue.computed(() => {
     return props.allowCreate && props.filterable;
   });
   function hasExistingOption(query) {
-    const hasValue = (option) => getValue(option) === query;
-    return props.options && props.options.some(hasValue) || states.createdOptions.some(hasValue);
+    const hasOption = (option) => getLabel(option) === query;
+    return props.options && props.options.some(hasOption) || states.createdOptions.some(hasOption);
   }
   function selectNewOption(option) {
     if (!enableAllowCreateMode.value) {

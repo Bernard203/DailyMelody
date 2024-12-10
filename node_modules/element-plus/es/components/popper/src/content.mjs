@@ -1,6 +1,6 @@
 import { placements } from '@popperjs/core';
-import '../../../utils/index.mjs';
 import { buildProps, definePropType } from '../../../utils/vue/props/runtime.mjs';
+import { useAriaProps } from '../../../hooks/use-aria/index.mjs';
 
 const POSITIONING_STRATEGIES = ["fixed", "absolute"];
 const popperCoreConfigProps = buildProps({
@@ -45,7 +45,7 @@ const popperContentProps = buildProps({
     type: definePropType([String, Array, Object])
   },
   effect: {
-    type: String,
+    type: definePropType(String),
     default: "dark"
   },
   visible: Boolean,
@@ -78,12 +78,9 @@ const popperContentProps = buildProps({
     type: Boolean,
     default: true
   },
-  ariaLabel: {
-    type: String,
-    default: void 0
-  },
   virtualTriggering: Boolean,
-  zIndex: Number
+  zIndex: Number,
+  ...useAriaProps(["ariaLabel"])
 });
 const popperContentEmits = {
   mouseenter: (evt) => evt instanceof MouseEvent,

@@ -3,7 +3,6 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var vue = require('vue');
-require('../../../../hooks/index.js');
 var index$2 = require('../../../input/index.js');
 var usePagination = require('../usePagination.js');
 var jumper = require('./jumper.js');
@@ -11,7 +10,6 @@ var pluginVue_exportHelper = require('../../../../_virtual/plugin-vue_export-hel
 var index = require('../../../../hooks/use-locale/index.js');
 var index$1 = require('../../../../hooks/use-namespace/index.js');
 
-const _hoisted_1 = ["disabled"];
 const __default__ = vue.defineComponent({
   name: "ElPaginationJumper"
 });
@@ -51,15 +49,15 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
           disabled: vue.unref(disabled),
           "model-value": vue.unref(innerValue),
           "validate-event": false,
-          label: vue.unref(t)("el.pagination.page"),
+          "aria-label": vue.unref(t)("el.pagination.page"),
           type: "number",
           "onUpdate:modelValue": handleInput,
           onChange: handleChange
-        }, null, 8, ["size", "class", "max", "disabled", "model-value", "label"]),
+        }, null, 8, ["size", "class", "max", "disabled", "model-value", "aria-label"]),
         vue.createElementVNode("span", {
           class: vue.normalizeClass([vue.unref(ns).e("classifier")])
         }, vue.toDisplayString(vue.unref(t)("el.pagination.pageClassifier")), 3)
-      ], 10, _hoisted_1);
+      ], 10, ["disabled"]);
     };
   }
 });

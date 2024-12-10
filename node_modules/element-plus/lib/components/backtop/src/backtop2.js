@@ -5,7 +5,6 @@ Object.defineProperty(exports, '__esModule', { value: true });
 var vue = require('vue');
 var index$1 = require('../../icon/index.js');
 var iconsVue = require('@element-plus/icons-vue');
-require('../../../hooks/index.js');
 var backtop = require('./backtop.js');
 var useBacktop = require('./use-backtop.js');
 var pluginVue_exportHelper = require('../../../_virtual/plugin-vue_export-helper.js');
@@ -36,7 +35,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
             key: 0,
             style: vue.normalizeStyle(vue.unref(backTopStyle)),
             class: vue.normalizeClass(vue.unref(ns).b()),
-            onClick: _cache[0] || (_cache[0] = vue.withModifiers((...args) => vue.unref(handleClick) && vue.unref(handleClick)(...args), ["stop"]))
+            onClick: vue.withModifiers(vue.unref(handleClick), ["stop"])
           }, [
             vue.renderSlot(_ctx.$slots, "default", {}, () => [
               vue.createVNode(vue.unref(index$1.ElIcon), {
@@ -48,7 +47,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
                 _: 1
               }, 8, ["class"])
             ])
-          ], 6)) : vue.createCommentVNode("v-if", true)
+          ], 14, ["onClick"])) : vue.createCommentVNode("v-if", true)
         ]),
         _: 3
       }, 8, ["name"]);

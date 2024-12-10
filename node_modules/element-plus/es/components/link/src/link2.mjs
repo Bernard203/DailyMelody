@@ -1,11 +1,9 @@
 import { defineComponent, computed, openBlock, createElementBlock, normalizeClass, unref, createBlock, withCtx, resolveDynamicComponent, createCommentVNode, renderSlot } from 'vue';
 import { ElIcon } from '../../icon/index.mjs';
-import '../../../hooks/index.mjs';
 import { linkProps, linkEmits } from './link.mjs';
 import _export_sfc from '../../../_virtual/plugin-vue_export-helper.mjs';
 import { useNamespace } from '../../../hooks/use-namespace/index.mjs';
 
-const _hoisted_1 = ["href", "target"];
 const __default__ = defineComponent({
   name: "ElLink"
 });
@@ -46,7 +44,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
           renderSlot(_ctx.$slots, "default")
         ], 2)) : createCommentVNode("v-if", true),
         _ctx.$slots.icon ? renderSlot(_ctx.$slots, "icon", { key: 2 }) : createCommentVNode("v-if", true)
-      ], 10, _hoisted_1);
+      ], 10, ["href", "target"]);
     };
   }
 });

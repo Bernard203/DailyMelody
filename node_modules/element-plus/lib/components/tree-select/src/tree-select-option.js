@@ -16,6 +16,11 @@ const component = vue.defineComponent({
         result.select.onOptionCreate(vm);
       }
     });
+    vue.watch(() => ctx.attrs.visible, (val) => {
+      result.states.visible = val;
+    }, {
+      immediate: true
+    });
     return result;
   },
   methods: {

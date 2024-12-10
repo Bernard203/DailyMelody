@@ -31,5 +31,5 @@ export interface SelectOptionProxy {
     hover: boolean;
     selectOptionClick: () => void;
 }
-export declare type ISelectProps = ExtractPropTypes<typeof SelectProps>;
+export type ISelectProps = ExtractPropTypes<typeof SelectProps>;
 export {};

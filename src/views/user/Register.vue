@@ -2,7 +2,7 @@
 import {ref, computed} from 'vue'
 import {router} from '../../router'
 import {userRegister} from "../../api/user.ts"
-import {getAllStore} from "../../api/store.ts";
+import {getAllStore} from "../../api/Music.ts";
 
 // 输入框值（需要在前端拦截不合法输入：是否为空+额外规则）
 const name = ref('')
@@ -231,7 +231,7 @@ function handleRegister() {
 }
 
 .bgimage {
-  background-image: url("../../assets/shopping-1s-1084px.svg");
+  background-image: url("../../../public/background.webp");
 }
 
 .login-card {

@@ -1,4 +1,3 @@
-import '../../../utils/index.mjs';
 import { buildProps, definePropType } from '../../../utils/vue/props/runtime.mjs';
 
 const progressProps = buildProps({
@@ -17,10 +16,7 @@ const progressProps = buildProps({
     default: "",
     values: ["", "success", "exception", "warning"]
   },
-  indeterminate: {
-    type: Boolean,
-    default: false
-  },
+  indeterminate: Boolean,
   duration: {
     type: Number,
     default: 3
@@ -33,10 +29,7 @@ const progressProps = buildProps({
     type: definePropType(String),
     default: "round"
   },
-  textInside: {
-    type: Boolean,
-    default: false
-  },
+  textInside: Boolean,
   width: {
     type: Number,
     default: 126

@@ -1,5 +1,4 @@
 import { defineComponent, computed, unref, reactive, toRefs, getCurrentInstance, onBeforeUnmount, nextTick, withDirectives, openBlock, createElementBlock, normalizeClass, withModifiers, renderSlot, createElementVNode, toDisplayString, vShow } from 'vue';
-import '../../../hooks/index.mjs';
 import { useOption } from './useOption.mjs';
 import _export_sfc from '../../../_virtual/plugin-vue_export-helper.mjs';
 import { useNamespace } from '../../../hooks/use-namespace/index.mjs';
@@ -45,8 +44,7 @@ const _sfc_main = defineComponent({
     select.onOptionCreate(vm);
     onBeforeUnmount(() => {
       const key = vm.value;
-      const { selected } = select.states;
-      const selectedOptions = select.props.multiple ? selected : [selected];
+      const { selected: selectedOptions } = select.states;
       const doesSelected = selectedOptions.some((item) => {
         return item.value === vm.value;
       });
@@ -58,7 +56,7 @@ const _sfc_main = defineComponent({
       select.onOptionDestroy(key, vm);
     });
     function selectOptionClick() {
-      if (props.disabled !== true && states.groupDisabled !== true) {
+      if (!isDisabled.value) {
         select.handleOptionSelect(vm);
       }
     }
@@ -79,7 +77,6 @@ const _sfc_main = defineComponent({
     };
   }
 });
-const _hoisted_1 = ["id", "aria-disabled", "aria-selected"];
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   return withDirectives((openBlock(), createElementBlock("li", {
     id: _ctx.id,
@@ -87,13 +84,13 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     role: "option",
     "aria-disabled": _ctx.isDisabled || void 0,
     "aria-selected": _ctx.itemSelected,
-    onMouseenter: _cache[0] || (_cache[0] = (...args) => _ctx.hoverItem && _ctx.hoverItem(...args)),
-    onClick: _cache[1] || (_cache[1] = withModifiers((...args) => _ctx.selectOptionClick && _ctx.selectOptionClick(...args), ["stop"]))
+    onMousemove: _ctx.hoverItem,
+    onClick: withModifiers(_ctx.selectOptionClick, ["stop"])
   }, [
     renderSlot(_ctx.$slots, "default", {}, () => [
       createElementVNode("span", null, toDisplayString(_ctx.currentLabel), 1)
     ])
-  ], 42, _hoisted_1)), [
+  ], 42, ["id", "aria-disabled", "aria-selected", "onMousemove", "onClick"])), [
     [vShow, _ctx.visible]
   ]);
 }

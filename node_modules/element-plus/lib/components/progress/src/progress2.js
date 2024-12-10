@@ -5,18 +5,11 @@ Object.defineProperty(exports, '__esModule', { value: true });
 var vue = require('vue');
 var index$1 = require('../../icon/index.js');
 var iconsVue = require('@element-plus/icons-vue');
-require('../../../hooks/index.js');
-require('../../../utils/index.js');
 var progress = require('./progress.js');
 var pluginVue_exportHelper = require('../../../_virtual/plugin-vue_export-helper.js');
 var index = require('../../../hooks/use-namespace/index.js');
 var shared = require('@vue/shared');
 
-const _hoisted_1 = ["aria-valuenow"];
-const _hoisted_2 = { viewBox: "0 0 100 100" };
-const _hoisted_3 = ["d", "stroke", "stroke-linecap", "stroke-width"];
-const _hoisted_4 = ["d", "stroke", "opacity", "stroke-linecap", "stroke-width"];
-const _hoisted_5 = { key: 0 };
 const __default__ = vue.defineComponent({
   name: "ElProgress"
 });
@@ -32,11 +25,19 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
       default: "#20a0ff"
     };
     const ns = index.useNamespace("progress");
-    const barStyle = vue.computed(() => ({
-      width: `${props.percentage}%`,
-      animationDuration: `${props.duration}s`,
-      backgroundColor: getCurrentColor(props.percentage)
-    }));
+    const barStyle = vue.computed(() => {
+      const barStyle2 = {
+        width: `${props.percentage}%`,
+        animationDuration: `${props.duration}s`
+      };
+      const color = getCurrentColor(props.percentage);
+      if (color.includes("gradient")) {
+        barStyle2.background = color;
+      } else {
+        barStyle2.backgroundColor = color;
+      }
+      return barStyle2;
+    });
     const relativeStrokeWidth = vue.computed(() => (props.strokeWidth / props.width * 100).toFixed(1));
     const radius = vue.computed(() => {
       if (["circle", "dashboard"].includes(props.type)) {
@@ -169,7 +170,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
           class: vue.normalizeClass(vue.unref(ns).b("circle")),
           style: vue.normalizeStyle({ height: `${_ctx.width}px`, width: `${_ctx.width}px` })
         }, [
-          (vue.openBlock(), vue.createElementBlock("svg", _hoisted_2, [
+          (vue.openBlock(), vue.createElementBlock("svg", { viewBox: "0 0 100 100" }, [
             vue.createElementVNode("path", {
               class: vue.normalizeClass(vue.unref(ns).be("circle", "track")),
               d: vue.unref(trackPath),
@@ -178,7 +179,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
               "stroke-width": vue.unref(relativeStrokeWidth),
               fill: "none",
               style: vue.normalizeStyle(vue.unref(trailPathStyle))
-            }, null, 14, _hoisted_3),
+            }, null, 14, ["d", "stroke", "stroke-linecap", "stroke-width"]),
             vue.createElementVNode("path", {
               class: vue.normalizeClass(vue.unref(ns).be("circle", "path")),
               d: vue.unref(trackPath),
@@ -188,7 +189,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
               "stroke-linecap": _ctx.strokeLinecap,
               "stroke-width": vue.unref(relativeStrokeWidth),
               style: vue.normalizeStyle(vue.unref(circlePathStyle))
-            }, null, 14, _hoisted_4)
+            }, null, 14, ["d", "stroke", "opacity", "stroke-linecap", "stroke-width"])
           ]))
         ], 6)),
         (_ctx.showText || _ctx.$slots.default) && !_ctx.textInside ? (vue.openBlock(), vue.createElementBlock("div", {
@@ -197,7 +198,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
           style: vue.normalizeStyle({ fontSize: `${vue.unref(progressTextSize)}px` })
         }, [
           vue.renderSlot(_ctx.$slots, "default", { percentage: _ctx.percentage }, () => [
-            !_ctx.status ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_5, vue.toDisplayString(vue.unref(content)), 1)) : (vue.openBlock(), vue.createBlock(vue.unref(index$1.ElIcon), { key: 1 }, {
+            !_ctx.status ? (vue.openBlock(), vue.createElementBlock("span", { key: 0 }, vue.toDisplayString(vue.unref(content)), 1)) : (vue.openBlock(), vue.createBlock(vue.unref(index$1.ElIcon), { key: 1 }, {
               default: vue.withCtx(() => [
                 (vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent(vue.unref(statusIcon))))
               ]),
@@ -205,7 +206,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
             }))
           ])
         ], 6)) : vue.createCommentVNode("v-if", true)
-      ], 10, _hoisted_1);
+      ], 10, ["aria-valuenow"]);
     };
   }
 });

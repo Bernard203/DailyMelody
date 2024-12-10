@@ -6,8 +6,6 @@ var vue = require('vue');
 var index$4 = require('../../button/index.js');
 var index$3 = require('../../icon/index.js');
 var index$2 = require('../../tooltip/index.js');
-require('../../../hooks/index.js');
-require('../../../utils/index.js');
 var popconfirm = require('./popconfirm.js');
 var pluginVue_exportHelper = require('../../../_virtual/plugin-vue_export-helper.js');
 var index = require('../../../hooks/use-locale/index.js');
@@ -81,28 +79,33 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
             vue.createElementVNode("div", {
               class: vue.normalizeClass(vue.unref(ns).e("action"))
             }, [
-              vue.createVNode(vue.unref(index$4.ElButton), {
-                size: "small",
-                type: _ctx.cancelButtonType === "text" ? "" : _ctx.cancelButtonType,
-                text: _ctx.cancelButtonType === "text",
-                onClick: cancel
-              }, {
-                default: vue.withCtx(() => [
-                  vue.createTextVNode(vue.toDisplayString(vue.unref(finalCancelButtonText)), 1)
-                ]),
-                _: 1
-              }, 8, ["type", "text"]),
-              vue.createVNode(vue.unref(index$4.ElButton), {
-                size: "small",
-                type: _ctx.confirmButtonType === "text" ? "" : _ctx.confirmButtonType,
-                text: _ctx.confirmButtonType === "text",
-                onClick: confirm
-              }, {
-                default: vue.withCtx(() => [
-                  vue.createTextVNode(vue.toDisplayString(vue.unref(finalConfirmButtonText)), 1)
-                ]),
-                _: 1
-              }, 8, ["type", "text"])
+              vue.renderSlot(_ctx.$slots, "actions", {
+                confirm,
+                cancel
+              }, () => [
+                vue.createVNode(vue.unref(index$4.ElButton), {
+                  size: "small",
+                  type: _ctx.cancelButtonType === "text" ? "" : _ctx.cancelButtonType,
+                  text: _ctx.cancelButtonType === "text",
+                  onClick: cancel
+                }, {
+                  default: vue.withCtx(() => [
+                    vue.createTextVNode(vue.toDisplayString(vue.unref(finalCancelButtonText)), 1)
+                  ]),
+                  _: 1
+                }, 8, ["type", "text"]),
+                vue.createVNode(vue.unref(index$4.ElButton), {
+                  size: "small",
+                  type: _ctx.confirmButtonType === "text" ? "" : _ctx.confirmButtonType,
+                  text: _ctx.confirmButtonType === "text",
+                  onClick: confirm
+                }, {
+                  default: vue.withCtx(() => [
+                    vue.createTextVNode(vue.toDisplayString(vue.unref(finalConfirmButtonText)), 1)
+                  ]),
+                  _: 1
+                }, 8, ["type", "text"])
+              ])
             ], 2)
           ], 2)
         ]),

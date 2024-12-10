@@ -1,5 +1,5 @@
-import '../../../utils/index.mjs';
 import { buildProps, definePropType } from '../../../utils/vue/props/runtime.mjs';
+import { useAriaProps } from '../../../hooks/use-aria/index.mjs';
 import { isNumber } from '../../../utils/types.mjs';
 
 const scrollbarProps = buildProps({
@@ -41,13 +41,13 @@ const scrollbarProps = buildProps({
     type: Number,
     default: 20
   },
+  tabindex: {
+    type: [String, Number],
+    default: void 0
+  },
   id: String,
   role: String,
-  ariaLabel: String,
-  ariaOrientation: {
-    type: String,
-    values: ["horizontal", "vertical"]
-  }
+  ...useAriaProps(["ariaLabel", "ariaOrientation"])
 });
 const scrollbarEmits = {
   scroll: ({

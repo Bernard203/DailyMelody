@@ -76,5 +76,5 @@ function useUtils(props) {
   };
 }
 
-export { useUtils as default };
+export { convertToRows, useUtils as default };
 //# sourceMappingURL=utils-helper.mjs.map

@@ -1,10 +1,9 @@
 import { defineComponent, toRef, unref, openBlock, createElementBlock, mergeProps, Fragment, renderList, renderSlot, createVNode, normalizeClass, createBlock, createCommentVNode, normalizeProps } from 'vue';
-import '../../../hooks/index.mjs';
 import { skeletonProps } from './skeleton.mjs';
 import SkeletonItem from './skeleton-item2.mjs';
 import _export_sfc from '../../../_virtual/plugin-vue_export-helper.mjs';
-import { useNamespace } from '../../../hooks/use-namespace/index.mjs';
 import { useThrottleRender } from '../../../hooks/use-throttle-render/index.mjs';
+import { useNamespace } from '../../../hooks/use-namespace/index.mjs';
 
 const __default__ = defineComponent({
   name: "ElSkeleton"
@@ -26,7 +25,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
       }, _ctx.$attrs), [
         (openBlock(true), createElementBlock(Fragment, null, renderList(_ctx.count, (i) => {
           return openBlock(), createElementBlock(Fragment, { key: i }, [
-            _ctx.loading ? renderSlot(_ctx.$slots, "template", { key: i }, () => [
+            unref(uiLoading) ? renderSlot(_ctx.$slots, "template", { key: i }, () => [
               createVNode(SkeletonItem, {
                 class: normalizeClass(unref(ns).is("first")),
                 variant: "p"

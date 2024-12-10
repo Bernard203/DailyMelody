@@ -1,18 +1,11 @@
 import { defineComponent, computed, openBlock, createElementBlock, normalizeClass, unref, createElementVNode, normalizeStyle, renderSlot, toDisplayString, createCommentVNode, createBlock, withCtx, resolveDynamicComponent } from 'vue';
 import { ElIcon } from '../../icon/index.mjs';
 import { WarningFilled, CircleCheck, CircleClose, Check, Close } from '@element-plus/icons-vue';
-import '../../../hooks/index.mjs';
-import '../../../utils/index.mjs';
 import { progressProps } from './progress.mjs';
 import _export_sfc from '../../../_virtual/plugin-vue_export-helper.mjs';
 import { useNamespace } from '../../../hooks/use-namespace/index.mjs';
-import { isString, isFunction } from '@vue/shared';
+import { isFunction, isString } from '@vue/shared';
 
-const _hoisted_1 = ["aria-valuenow"];
-const _hoisted_2 = { viewBox: "0 0 100 100" };
-const _hoisted_3 = ["d", "stroke", "stroke-linecap", "stroke-width"];
-const _hoisted_4 = ["d", "stroke", "opacity", "stroke-linecap", "stroke-width"];
-const _hoisted_5 = { key: 0 };
 const __default__ = defineComponent({
   name: "ElProgress"
 });
@@ -28,11 +21,19 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
       default: "#20a0ff"
     };
     const ns = useNamespace("progress");
-    const barStyle = computed(() => ({
-      width: `${props.percentage}%`,
-      animationDuration: `${props.duration}s`,
-      backgroundColor: getCurrentColor(props.percentage)
-    }));
+    const barStyle = computed(() => {
+      const barStyle2 = {
+        width: `${props.percentage}%`,
+        animationDuration: `${props.duration}s`
+      };
+      const color = getCurrentColor(props.percentage);
+      if (color.includes("gradient")) {
+        barStyle2.background = color;
+      } else {
+        barStyle2.backgroundColor = color;
+      }
+      return barStyle2;
+    });
     const relativeStrokeWidth = computed(() => (props.strokeWidth / props.width * 100).toFixed(1));
     const radius = computed(() => {
       if (["circle", "dashboard"].includes(props.type)) {
@@ -165,7 +166,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
           class: normalizeClass(unref(ns).b("circle")),
           style: normalizeStyle({ height: `${_ctx.width}px`, width: `${_ctx.width}px` })
         }, [
-          (openBlock(), createElementBlock("svg", _hoisted_2, [
+          (openBlock(), createElementBlock("svg", { viewBox: "0 0 100 100" }, [
             createElementVNode("path", {
               class: normalizeClass(unref(ns).be("circle", "track")),
               d: unref(trackPath),
@@ -174,7 +175,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
               "stroke-width": unref(relativeStrokeWidth),
               fill: "none",
               style: normalizeStyle(unref(trailPathStyle))
-            }, null, 14, _hoisted_3),
+            }, null, 14, ["d", "stroke", "stroke-linecap", "stroke-width"]),
             createElementVNode("path", {
               class: normalizeClass(unref(ns).be("circle", "path")),
               d: unref(trackPath),
@@ -184,7 +185,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
               "stroke-linecap": _ctx.strokeLinecap,
               "stroke-width": unref(relativeStrokeWidth),
               style: normalizeStyle(unref(circlePathStyle))
-            }, null, 14, _hoisted_4)
+            }, null, 14, ["d", "stroke", "opacity", "stroke-linecap", "stroke-width"])
           ]))
         ], 6)),
         (_ctx.showText || _ctx.$slots.default) && !_ctx.textInside ? (openBlock(), createElementBlock("div", {
@@ -193,7 +194,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
           style: normalizeStyle({ fontSize: `${unref(progressTextSize)}px` })
         }, [
           renderSlot(_ctx.$slots, "default", { percentage: _ctx.percentage }, () => [
-            !_ctx.status ? (openBlock(), createElementBlock("span", _hoisted_5, toDisplayString(unref(content)), 1)) : (openBlock(), createBlock(unref(ElIcon), { key: 1 }, {
+            !_ctx.status ? (openBlock(), createElementBlock("span", { key: 0 }, toDisplayString(unref(content)), 1)) : (openBlock(), createBlock(unref(ElIcon), { key: 1 }, {
               default: withCtx(() => [
                 (openBlock(), createBlock(resolveDynamicComponent(unref(statusIcon))))
               ]),
@@ -201,7 +202,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
             }))
           ])
         ], 6)) : createCommentVNode("v-if", true)
-      ], 10, _hoisted_1);
+      ], 10, ["aria-valuenow"]);
     };
   }
 });

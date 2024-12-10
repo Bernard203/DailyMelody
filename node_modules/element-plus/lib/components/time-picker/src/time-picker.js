@@ -34,13 +34,13 @@ var TimePicker = vue.defineComponent({
     const modelUpdater = (value) => ctx.emit("update:modelValue", value);
     vue.provide("ElPopperOptions", props.popperOptions);
     ctx.expose({
-      focus: (e) => {
+      focus: () => {
         var _a;
-        (_a = commonPicker.value) == null ? void 0 : _a.handleFocusInput(e);
+        (_a = commonPicker.value) == null ? void 0 : _a.focus();
       },
-      blur: (e) => {
+      blur: () => {
         var _a;
-        (_a = commonPicker.value) == null ? void 0 : _a.handleBlurInput(e);
+        (_a = commonPicker.value) == null ? void 0 : _a.blur();
       },
       handleOpen: () => {
         var _a;

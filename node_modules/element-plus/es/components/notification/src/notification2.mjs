@@ -1,19 +1,12 @@
 import { defineComponent, ref, computed, onMounted, openBlock, createBlock, Transition, unref, withCtx, withDirectives, createElementVNode, normalizeClass, normalizeStyle, resolveDynamicComponent, createCommentVNode, toDisplayString, renderSlot, createElementBlock, Fragment, vShow, withModifiers, createVNode } from 'vue';
-import { useTimeoutFn, useEventListener } from '@vueuse/core';
-import '../../../utils/index.mjs';
-import '../../../constants/index.mjs';
+import { useEventListener, useTimeoutFn } from '@vueuse/core';
 import { ElIcon } from '../../icon/index.mjs';
-import '../../config-provider/index.mjs';
 import { notificationProps, notificationEmits } from './notification.mjs';
 import _export_sfc from '../../../_virtual/plugin-vue_export-helper.mjs';
 import { useGlobalComponentSettings } from '../../config-provider/src/hooks/use-global-config.mjs';
-import { CloseComponents, TypeComponentsMap } from '../../../utils/vue/icon.mjs';
+import { TypeComponentsMap, CloseComponents } from '../../../utils/vue/icon.mjs';
 import { EVENT_CODE } from '../../../constants/aria.mjs';
 
-const _hoisted_1 = ["id"];
-const _hoisted_2 = ["textContent"];
-const _hoisted_3 = { key: 0 };
-const _hoisted_4 = ["innerHTML"];
 const __default__ = defineComponent({
   name: "ElNotification"
 });
@@ -48,7 +41,6 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     });
     function startTimer() {
       if (props.duration > 0) {
-        ;
         ({ stop: timer } = useTimeoutFn(() => {
           if (visible.value)
             close();
@@ -86,7 +78,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
       return openBlock(), createBlock(Transition, {
         name: unref(ns).b("fade"),
         onBeforeLeave: _ctx.onClose,
-        onAfterLeave: _cache[1] || (_cache[1] = ($event) => _ctx.$emit("destroy")),
+        onAfterLeave: ($event) => _ctx.$emit("destroy"),
         persisted: ""
       }, {
         default: withCtx(() => [
@@ -97,7 +89,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
             role: "alert",
             onMouseenter: clearTimer,
             onMouseleave: startTimer,
-            onClick: _cache[0] || (_cache[0] = (...args) => _ctx.onClick && _ctx.onClick(...args))
+            onClick: _ctx.onClick
           }, [
             unref(iconComponent) ? (openBlock(), createBlock(unref(ElIcon), {
               key: 0,
@@ -114,15 +106,15 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
               createElementVNode("h2", {
                 class: normalizeClass(unref(ns).e("title")),
                 textContent: toDisplayString(_ctx.title)
-              }, null, 10, _hoisted_2),
+              }, null, 10, ["textContent"]),
               withDirectives(createElementVNode("div", {
                 class: normalizeClass(unref(ns).e("content")),
                 style: normalizeStyle(!!_ctx.title ? void 0 : { margin: 0 })
               }, [
                 renderSlot(_ctx.$slots, "default", {}, () => [
-                  !_ctx.dangerouslyUseHTMLString ? (openBlock(), createElementBlock("p", _hoisted_3, toDisplayString(_ctx.message), 1)) : (openBlock(), createElementBlock(Fragment, { key: 1 }, [
+                  !_ctx.dangerouslyUseHTMLString ? (openBlock(), createElementBlock("p", { key: 0 }, toDisplayString(_ctx.message), 1)) : (openBlock(), createElementBlock(Fragment, { key: 1 }, [
                     createCommentVNode(" Caution here, message could've been compromised, never use user's input as message "),
-                    createElementVNode("p", { innerHTML: _ctx.message }, null, 8, _hoisted_4)
+                    createElementVNode("p", { innerHTML: _ctx.message }, null, 8, ["innerHTML"])
                   ], 2112))
                 ])
               ], 6), [
@@ -139,12 +131,12 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
                 _: 1
               }, 8, ["class", "onClick"])) : createCommentVNode("v-if", true)
             ], 2)
-          ], 46, _hoisted_1), [
+          ], 46, ["id", "onClick"]), [
             [vShow, visible.value]
           ])
         ]),
         _: 3
-      }, 8, ["name", "onBeforeLeave"]);
+      }, 8, ["name", "onBeforeLeave", "onAfterLeave"]);
     };
   }
 });
