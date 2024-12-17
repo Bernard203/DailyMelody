@@ -12,12 +12,3 @@ export const uploadImage = (payload: any) => {
             return res
         })
 }
-
-//Lab5新增
-// 获取excel的链接
-export const getExcelUrl = () => {
-    return axios.get(`${API_MODULE}/excel`, )
-        .then(res => {
-            return res
-        })
-}

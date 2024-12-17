@@ -1,14 +1,12 @@
 <!--等待修改中-->
 
 <script setup lang="ts">
-import {parseRole} from "../utils"
-import {User, Document, Discount, SwitchButton} from "@element-plus/icons-vue"   //图标
+import {User, Document, SwitchButton} from "@element-plus/icons-vue"   //图标
 import { Search } from "@element-plus/icons-vue"
 import {useRouter} from "vue-router";
 
 const router = useRouter()
 
-const role = sessionStorage.getItem('role')    //登录的时候插入的
 
 
 //退出登录
@@ -40,12 +38,8 @@ function logout() {
 
       <el-col :span="3" class="header-icon">
         <router-link to="/allStore" v-slot="{navigate}" class="no-link">
-          <h1 @click="navigate" class="header-text"> 蓝鲸在线购物</h1>
+          <h1 @click="navigate" class="header-text"> 每日旋律</h1>
         </router-link>
-      </el-col>
-
-      <el-col :span="2">
-        <el-tag class="role-tag" size="large">{{ parseRole(role) }}版</el-tag>
       </el-col>
 
       <el-col :span="14"></el-col>
@@ -62,17 +56,8 @@ function logout() {
         </router-link>
       </el-col>
 
-      <el-col :span="1" class="header-icon">
-        <router-link to="/allOrder" v-slot="{navigate}">
-          <el-icon @click="navigate" :size="35" color="white" ><Document /></el-icon>
-        </router-link>
-      </el-col>
-
-      <!--Lab4新增，点击至全部优惠券界面-->
-      <el-col :span="1" class="header-icon">
-        <router-link to="/allCoupon" v-slot="{navigate}">
-          <el-icon @click="navigate" :size="35" color="white" ><Discount /></el-icon>
-        </router-link>
+      <el-col :span="3">
+        <router-link to="/createMusic" >传歌</router-link>
       </el-col>
 
       <el-col :span="1" class="header-icon">
