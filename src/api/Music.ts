@@ -34,7 +34,7 @@ export const getMusicById = (musicId: number) => {
 }
 
 // 添加收藏信息
-export const addComment = (collectionInfo: CollectionInfo) => {
+export const addCollection = (collectionInfo: CollectionInfo) => {
     return axios.post(`${MUSIC_MODULE}/`, collectionInfo,
         {headers: {'Content-Type': 'application/json'}})
         .then(res => {
@@ -43,7 +43,7 @@ export const addComment = (collectionInfo: CollectionInfo) => {
 }
 
 // 获取全部收藏信息
-export const getCommentInfo = () => {
+export const getCollectionInfo = () => {
     return axios.get(`${MUSIC_MODULE}/all`, )
         .then(res => {
             return res
@@ -51,7 +51,7 @@ export const getCommentInfo = () => {
 }
 
 // 根据收藏ID获取收藏信息,包括音乐名、
-export const getCommentById = (collectionId: number) => {
+export const getCollectionById = (collectionId: number) => {
     return axios.get(`${MUSIC_MODULE}/${collectionId}`)
         .then(res => {
             return res
