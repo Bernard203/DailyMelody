@@ -24,7 +24,7 @@ const createDisabled = computed(() => {
       hasMp3File.value && hasLrcFile&&hasImageFile.value)
 })
 
-// 创建商店按钮触发
+// 创建歌曲按钮触发
 function handleCreateMusic() {
   const payload = {
     name: name.value,

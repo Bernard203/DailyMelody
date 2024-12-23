@@ -42,7 +42,7 @@ const router = createRouter({
             {
                 path: '/favouriteSongs',
                 name: 'favouriteSongs',
-                component: () => import('../views/music/FavouriteSongs.vue'),
+                component: () => import('../views/music/FavoriteList.vue'),
                 meta: {title: '收藏歌单'}
             },
         ]
