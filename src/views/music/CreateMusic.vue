@@ -2,39 +2,49 @@
 import {computed, ref} from 'vue'
 import {router} from '../../router'
 import {Back, UploadFilled} from "@element-plus/icons-vue"
-import {createStore} from "../../api/Music.ts"
+import{createMusic} from '../../api/Music.ts'
 import {uploadImage} from "../../api/tools.ts"
 
 // 输入框值（需要前端阻拦不合法输入）
 const name = ref('')
-const location = ref('')
-const imageFileList = ref([])
-const logoUrl = ref('')
+const sentence = ref('')
+const musicUrl = ref('')
+const lrcUrl = ref('')
+const imgUrl = ref('')
 
+
+const imageFileList = ref([])
 const hasNameInput = computed(() => name.value != '')
-const hasLocationInput = computed(() => location.value != '')
-const hasImageFile = computed(() => logoUrl.value != '')
+const hasSentenceInput = computed(() => sentence.value != '')
+const hasMp3File = computed(() => musicUrl.value != '')
+const hasLrcFile = computed(() => lrcUrl.value != '')
+const hasImageFile = computed(() => imgUrl.value != '')
 const createDisabled = computed(() => {
-  return !(hasNameInput.value && hasLocationInput.value && hasImageFile.value)
+  return !(hasNameInput.value && hasSentenceInput.value &&
+      hasMp3File.value && hasLrcFile&&hasImageFile.value)
 })
 
 // 创建商店按钮触发
-function handleCreateStore() {
+function handleCreateMusic() {
   const payload = {
     name: name.value,
-    location: location.value,
-    logoUrl: logoUrl.value
+    sentence:sentence.value,
+    musicUrl:musicUrl.value,
+    lrcUrl:lrcUrl.value,
+    imgUrl:imgUrl.value,
   };
-  createStore(payload).then(res => {
+  createMusic(payload).then(res => {
     if (res.data.code === '000') {
       ElMessage({
-        message: '添加商户成功！',
+        message: '添加音乐成功！',
         type: 'success',
         center: true,
       })
       name.value = ''
-      location.value = ''
-      logoUrl.value = ''
+      sentence.value = ''
+      lrcUrl.value = ''
+      imgUrl.value = ''
+      musicUrl.value = ''
       imageFileList.value.splice(0)
     } else if (res.data.code === '400') {
       ElMessage({
@@ -46,12 +56,28 @@ function handleCreateStore() {
   })
 }
 
-function handleChange(file: any, fileList: any) {
+function handleImgChange(file: any, fileList: any) {
   imageFileList.value = fileList
   let formData = new FormData()
   formData.append('file', file.raw)
   uploadImage(formData).then(res => {
-    logoUrl.value = res.data.result
+    imgUrl.value = res.data.result
+  })
+}
+function handleMusicChange(file: any, fileList: any) {
+  imageFileList.value = fileList
+  let formData = new FormData()
+  formData.append('file', file.raw)
+  uploadImage(formData).then(res => {
+    musicUrl.value = res.data.result
+  })
+}
+function handleLrcChange(file: any, fileList: any) {
+  imageFileList.value = fileList
+  let formData = new FormData()
+  formData.append('file', file.raw)
+  uploadImage(formData).then(res => {
+    lrcUrl.value = res.data.result
   })
 }
 
@@ -75,25 +101,65 @@ function toBackPage() {
       <el-icon><Back/></el-icon>
     </el-button>
 
-    <h1 class="create-store-title">新建商店</h1>
+    <h1 class="create-store-title">新建音乐</h1>
 
     <el-form label-position="left" label-width="90px" size="large" class="create-store-form">
 
-      <el-form-item label="商店名">
-        <el-input id="name" v-model="name" required placeholder="请输入商店名"/>
+      <el-form-item label="歌名">
+        <el-input id="name" v-model="name" required placeholder="请输入歌名"/>
       </el-form-item>
 
-      <el-form-item label="商店地址">
-        <el-input id="location" v-model="location" required placeholder="楼层-门牌号 如：3楼-305"/>
+      <el-form-item label="对应好句">
+        <el-input id="location" v-model="sentence" required placeholder="对应好句"/>
       </el-form-item>
 
-      <el-form-item label="商店Logo">
+      <el-form-item label="歌曲封面">
         <el-upload
             v-model:file-list="imageFileList"
             :limit="1"
-            :on-change="handleChange"
+            :on-change="handleImgChange"
             :on-exceed="handleExceed"
-            :on-remove="handleChange"
+            :on-remove="handleImgChange"
+            class="upload-demo"
+            list-type="picture"
+            :http-request="uploadHttpRequest"
+            drag>
+          <el-icon class="el-icon--upload">
+            <upload-filled/>
+          </el-icon>
+          <div class="el-upload__text">
+            将文件拖到此处或单击此处上传。仅允许上传一份文件。
+          </div>
+        </el-upload>
+      </el-form-item>
+
+      <el-form-item label="歌曲文件">
+        <el-upload
+            v-model:file-list="imageFileList"
+            :limit="1"
+            :on-change="handleMusicChange"
+            :on-exceed="handleExceed"
+            :on-remove="handleMusicChange"
+            class="upload-demo"
+            list-type="picture"
+            :http-request="uploadHttpRequest"
+            drag>
+          <el-icon class="el-icon--upload">
+            <upload-filled/>
+          </el-icon>
+          <div class="el-upload__text">
+            将文件拖到此处或单击此处上传。仅允许上传一份文件。
+          </div>
+        </el-upload>
+      </el-form-item>
+
+      <el-form-item label="歌词文件">
+        <el-upload
+            v-model:file-list="imageFileList"
+            :limit="1"
+            :on-change="handleLrcChange"
+            :on-exceed="handleExceed"
+            :on-remove="handleLrcChange"
             class="upload-demo"
             list-type="picture"
             :http-request="uploadHttpRequest"
@@ -108,9 +174,9 @@ function toBackPage() {
       </el-form-item>
 
       <el-form-item>
-        <el-button @click.prevent="handleCreateStore()" :disabled="createDisabled"
+        <el-button @click.prevent="handleCreateMusic()" :disabled="createDisabled"
                    type="primary" plain>
-          创建商店
+          创建歌曲
         </el-button>
       </el-form-item>
     </el-form>

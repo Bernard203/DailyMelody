@@ -4,7 +4,7 @@ const router = createRouter({
     history: createWebHashHistory(),
     routes: [{
         path: '/',
-        redirect: '/login',
+        redirect: '/home',
     }, {
         path: '/login',
         component: () => import('../views/user/Login.vue'),
@@ -15,7 +15,7 @@ const router = createRouter({
         meta: {title: '用户注册'}
     }, {
         path: '/home',
-        redirect: '/allStore',
+        redirect: '/login',
         component: () => import('../views/Home.vue'),
         children: [
             {
@@ -36,7 +36,7 @@ const router = createRouter({
                 component: () => import('../views/music/CreateMusic.vue'),
                 meta: {
                     title: '创建歌曲',
-                    permission: ['MANAGER']
+                    // permission: ['MANAGER']
                 }
             },
             {
