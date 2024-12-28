@@ -1,8 +1,32 @@
 <template>
   <div class="layout" :style="backgroundStyle">
     <div class="overlay"></div>
+    <header class ="header">
+
+      <el-header class="custom-header" height="20">
+        <el-row :gutter="20">
+
+          <el-col :span="4" class="header-icon">
+          </el-col>
+
+          <el-col :span="12"></el-col>
+
+<!--          <h3 class="hello-text">今天好，{{ name }}</h3>-->
+
+          <el-col :span="1" class="header-icon">
+<!--            <a @click="logout">-->
+              <el-icon :size="35" color="white">
+                <SwitchButton />
+              </el-icon>
+<!--            </a>-->
+          </el-col>
+
+        </el-row>
+      </el-header>
+    </header>
     <main class="main-content">
       <div class="music-player">
+
         <!-- 左侧封面区域 -->
         <div class="cover-section">
           <div class="cover-art" :class="{ 'is-playing': isPlaying }">
@@ -68,12 +92,14 @@
 <script lang="ts">
 import { defineComponent, ref, computed, onMounted, watch } from 'vue'
 import {addCollection} from'../../api/Music.ts'
+import {SwitchButton} from "@element-plus/icons-vue";
 interface Lyric {
   time: number
   text: string
 }
 export default defineComponent({
   name: 'Layout',
+  components: {SwitchButton},
   setup() {
     const audioPlayer = ref<HTMLAudioElement | null>(null)
     const isPlaying = ref(false)
@@ -298,17 +324,18 @@ export default defineComponent({
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.35);
   backdrop-filter: blur(10px);
 }
+
 
 .main-content {
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  padding: 20px;
+  height: 80vh;
+  padding: 10px;
   z-index: 1;
 }
 
