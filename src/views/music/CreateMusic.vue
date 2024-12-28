@@ -90,7 +90,7 @@ function uploadHttpRequest() {
 }
 
 function toBackPage() {
-  router.push("/allStore")
+  router.push("/MusicPlayer")
 }
 </script>
 

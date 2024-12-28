@@ -2,8 +2,6 @@
 import {ref, computed} from 'vue'
 import {router} from '../../router'
 import {userRegister} from "../../api/user.ts"
-import {getAllStore} from "../../api/Music.ts";
-
 // 输入框值（需要在前端拦截不合法输入：是否为空+额外规则）
 const name = ref('')
 const identity = ref('')
@@ -19,10 +17,6 @@ interface StoreItem {
 
 const storeList = ref<StoreItem[]>([])
 const storeId = ref(undefined)
-getAllStore().then(res => {
-  storeList.value = res.data.result
-})
-
 // 电话号码是否为空
 const hasTelInput = computed(() => tel.value != '')
 // 密码是否为空

@@ -161,12 +161,6 @@ function updatePassword() {
           <el-input id="phone" v-model="tel" disabled/>
         </el-form-item>
 
-        <el-form-item v-if="role === 'CUSTOMER' || role === 'STAFF'">
-          <label for="address">收货地址</label>
-          <el-input id="address" type="textarea"
-                    rows="4"
-                    v-model="address" placeholder="中华门"></el-input>
-        </el-form-item>
       </el-form>
     </el-card>
 

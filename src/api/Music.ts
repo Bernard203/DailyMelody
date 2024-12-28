@@ -10,10 +10,11 @@ type MusicInfo = {
 }
 
 type CollectionInfo = {
-    musicId:number,//对应歌ID
+    musicName:string,//歌名
     date:string,//日期
     festival?:string,//特殊节日（可空）
     thought?:string,//感想（可空）
+    imgUrl:string,
 }
 
 // 上传音乐信息
@@ -28,6 +29,14 @@ export const createMusic = (musicInfo: MusicInfo) => {
 // 根据音乐Id获取指定音乐信息
 export const getMusicById = (musicId: number) => {
     return axios.get(`${MUSIC_MODULE}/${musicId}`)
+        .then(res => {
+            return res
+        })
+}
+
+// 获取推歌
+export const getMusic = () => {
+    return axios.get(`${MUSIC_MODULE}/getMusic`)
         .then(res => {
             return res
         })

@@ -34,6 +34,10 @@
           </div>
 
           <div class="control-buttons">
+            <el-input
+                v-model="thought"
+                placeholder="我的感想"
+                class = "favourite">sd</el-input>
             <button class="favorite-button" @click="toggleFavorite" :class="{ 'is-favorite': isFavorite }">
               <span class="heart-icon">♥</span>
             </button>
@@ -63,12 +67,11 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, onMounted, watch } from 'vue'
-
+import {addCollection} from'../../api/Music.ts'
 interface Lyric {
   time: number
   text: string
 }
-
 export default defineComponent({
   name: 'Layout',
   setup() {
@@ -89,7 +92,10 @@ export default defineComponent({
       url: '/public/周杰伦 - 安静.flac',  // 将音频文件放在 public 目录下
       cover: '/images/album-cover.jpg', // 将封面图片放在 public 目录下
       title: '空飛ぶ猫',
+      musicId:'1',
       artist: 'ナナツカゼ',
+      date:'12.27',
+      festival:"",
       lyrics: `[00:00.000] 作词 : ナナツカゼ
   [00:01.000] 作曲 : ナナツカゼ
   [00:16.750]飛び立つ前に　確かめたいことがある
@@ -224,11 +230,32 @@ export default defineComponent({
 
     // 在 setup 函数中添加收藏相关逻辑
     const isFavorite = ref(false)
-
+    const thought = ref('')
     const toggleFavorite = () => {
-      isFavorite.value = !isFavorite.value
+      if(!isFavorite.value){
+        const payload = {
+          musicName:currentSong.value.title,//对应歌ID
+          date:currentSong.value.date,//日期
+          festival:currentSong.value.artist,//特殊节日（可空）
+          thought:thought.value,
+          imgUrl:currentSong.value.cover,
+        };
+        addCollection(payload).then(res => {
+          if (res.data.code === '000') {
+            thought.value = "";
+            isFavorite.value = true;
+          } else if (res.data.code === '400') {
+            ElMessage({
+              message: res.data.msg,
+              type: 'error',
+              center: true,
+            })
+          }
+        })
+      }
       // 这里可以添加收藏/取消收藏的业务逻辑
     }
+
 
     return {
       audioPlayer,
@@ -249,6 +276,7 @@ export default defineComponent({
       seek,
       formatTime,
       isFavorite,
+      thought,
       toggleFavorite
     }
   }
@@ -328,6 +356,21 @@ export default defineComponent({
   font-size: 28px;
   margin: 0;
   color: #fff;
+}
+.favourite {
+  border-radius: 10px;          /* 圆角效果 */
+  background-color: rgba(255, 255, 255, 0.5); /* 半透明背景 */
+  width: 300px;                 /* 限定宽度 */
+  padding: 10px;                /* 内边距 */
+  border: 1px solid #ccc;       /* 边框颜色 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 微妙的阴影 */
+  transition: background-color 0.3s, border-color 0.3s; /* 平滑过渡效果 */
+}
+
+.favourite:focus {
+  background-color: rgba(255, 255, 255, 0.8); /* 获得焦点时增加透明度 */
+  border-color: #1e90ff;          /* 获得焦点时改变边框颜色 */
+  box-shadow: 0 0 8px rgba(30, 144, 255, 0.5); /* 焦点阴影效果 */
 }
 
 .artist {
