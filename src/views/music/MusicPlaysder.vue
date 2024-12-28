@@ -2,13 +2,7 @@
   <div class="layout" :style="backgroundStyle">
     <div class="overlay"></div>
     <header class ="header">
-      <el-drawer
-          v-model="drawer"
-          title="我的信息"
-          :direction="'ltr'"
-      >
-
-      </el-drawer>
+      <Dashboard v-model:drawer="drawerVisible" />
       <el-header class="custom-header" height="20">
         <el-row :gutter="20">
 
@@ -17,7 +11,7 @@
 
           <el-col :span="12"></el-col>
 
-<!--          <h3 class="hello-text">今天好，{{ name }}</h3>-->
+          <!--          <h3 class="hello-text">今天好，{{ name }}</h3>-->
           <el-col :span="1" class="header-icon">
             <router-link to="/favouriteSongs" v-slot="{navigate}">
               <el-icon @click="navigate" :size="35" color="white" >
@@ -26,9 +20,9 @@
             </router-link>
           </el-col>
           <el-col :span="1" class="header-icon">
-              <el-icon @click="HandleDrawer" :size="35" color="white" >
-                <User />
-              </el-icon>
+            <el-icon @click="HandleDrawer" :size="35" color="white" >
+              <User />
+            </el-icon>
           </el-col>
 
           <el-col :span="1" class="header-icon">
@@ -108,9 +102,10 @@
 </template>
 
 <script lang="ts">
+import Dashboard from '../../components/Dashboard.vue'
 import { defineComponent, ref, computed, onMounted, watch } from 'vue'
 import {addCollection} from'../../api/Music.ts'
-import {User, Document, SwitchButton} from "@element-plus/icons-vue"
+import {User, Document, SwitchButton, UserFilled} from "@element-plus/icons-vue"
 import {router} from "../../router";   //图标
 interface Lyric {
   time: number
@@ -118,9 +113,14 @@ interface Lyric {
 }
 export default defineComponent({
   name: 'Layout',
-  components: {SwitchButton,User,Document},
+  computed: {
+    UserFilled() {
+      return UserFilled
+    }
+  },
+  components: {Dashboard, SwitchButton,User,Document},
   setup() {
-    const drawer = ref(false)
+    const drawer = ref()
     const audioPlayer = ref<HTMLAudioElement | null>(null)
     const isPlaying = ref(false)
     const currentTime = ref(0)
@@ -176,10 +176,6 @@ export default defineComponent({
     const progress = computed(() => {
       return (currentTime.value / duration.value) * 100 || 0
     })
-
-    function HandleDrawer(){
-      drawer.value = true;
-    }
 
     // 背景样式
     const backgroundStyle = computed(() => ({
@@ -321,6 +317,11 @@ export default defineComponent({
         })
       }
     }
+    const drawerVisible = ref(false); // 控制抽屉显示状态
+
+    const HandleDrawer = () => {
+      drawerVisible.value = true; // 打开抽屉
+    };
 
 
     return {
@@ -329,6 +330,8 @@ export default defineComponent({
       currentTime,
       duration,
       progress,
+      drawerVisible,
+      HandleDrawer,
       currentSong,
       currentLyricIndex,
       parsedLyrics,
@@ -345,11 +348,11 @@ export default defineComponent({
       User,
       Document,
       SwitchButton,
-      HandleDrawer,
       formatTime,
       isFavorite,
       thought,
-      toggleFavorite
+      toggleFavorite,
+      Dashboard
     }
   }
 })
@@ -504,7 +507,6 @@ export default defineComponent({
   cursor: pointer;
   transition: all 0.3s;
 }
-
 .play-button:hover {
   transform: scale(1.05);
   background: #fff;

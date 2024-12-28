@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import {computed, ref} from 'vue'
-import {router} from '../../router'
-import {Back, UploadFilled} from "@element-plus/icons-vue"
-import{createMusic} from '../../api/Music.ts'
-import {uploadImage} from "../../api/tools.ts"
+import { computed, ref } from 'vue'
+import { router } from '../../router'
+import { Back, UploadFilled } from "@element-plus/icons-vue"
+import { createMusic } from '../../api/Music.ts'
+import { uploadImage } from "../../api/tools.ts"
 
 // 输入框值（需要前端阻拦不合法输入）
 const name = ref('')
@@ -11,9 +11,12 @@ const sentence = ref('')
 const musicUrl = ref('')
 const lrcUrl = ref('')
 const imgUrl = ref('')
+const keyword = ref('')
 
+const imageFileList = ref([]) // 图片文件列表
+const musicFileList = ref([]) // 音乐文件列表
+const lrcFileList = ref([]) // 歌词文件列表
 
-const imageFileList = ref([])
 const hasNameInput = computed(() => name.value != '')
 const hasSentenceInput = computed(() => sentence.value != '')
 const hasMp3File = computed(() => musicUrl.value != '')
@@ -21,20 +24,23 @@ const hasLrcFile = computed(() => lrcUrl.value != '')
 const hasImageFile = computed(() => imgUrl.value != '')
 const createDisabled = computed(() => {
   return !(hasNameInput.value && hasSentenceInput.value &&
-      hasMp3File.value && hasLrcFile&&hasImageFile.value)
+      hasMp3File.value && hasLrcFile.value && hasImageFile.value)
 })
 
 // 创建歌曲按钮触发
 function handleCreateMusic() {
+  console.log("222")
   const payload = {
     name: name.value,
-    sentence:sentence.value,
-    musicUrl:musicUrl.value,
-    lrcUrl:lrcUrl.value,
-    imgUrl:imgUrl.value,
+    sentence: sentence.value,
+    musicUrl: musicUrl.value,
+    lrcUrl: lrcUrl.value,
+    imgUrl: imgUrl.value,
+    keyword: keyword.value,
   };
   createMusic(payload).then(res => {
-    if (res.data.code === '000') {
+    console.log(res)
+    if (res.status == 200) {
       ElMessage({
         message: '添加音乐成功！',
         type: 'success',
@@ -45,7 +51,10 @@ function handleCreateMusic() {
       lrcUrl.value = ''
       imgUrl.value = ''
       musicUrl.value = ''
+      keyword.value = ''
       imageFileList.value.splice(0)
+      musicFileList.value.splice(0)
+      lrcFileList.value.splice(0)
     } else if (res.data.code === '400') {
       ElMessage({
         message: res.data.msg,
@@ -62,22 +71,27 @@ function handleImgChange(file: any, fileList: any) {
   formData.append('file', file.raw)
   uploadImage(formData).then(res => {
     imgUrl.value = res.data.result
+    console.log(res.data)
   })
 }
+
 function handleMusicChange(file: any, fileList: any) {
-  imageFileList.value = fileList
+  musicFileList.value = fileList
   let formData = new FormData()
   formData.append('file', file.raw)
   uploadImage(formData).then(res => {
     musicUrl.value = res.data.result
+    console.log(res.data)
   })
 }
+
 function handleLrcChange(file: any, fileList: any) {
-  imageFileList.value = fileList
+  lrcFileList.value = fileList
   let formData = new FormData()
   formData.append('file', file.raw)
   uploadImage(formData).then(res => {
     lrcUrl.value = res.data.result
+    console.log(res.data)
   })
 }
 
@@ -94,7 +108,6 @@ function toBackPage() {
 }
 </script>
 
-
 <template>
   <el-main>
     <el-button @click="toBackPage()" type="primary" circle plain>
@@ -107,6 +120,10 @@ function toBackPage() {
 
       <el-form-item label="歌名">
         <el-input id="name" v-model="name" required placeholder="请输入歌名"/>
+      </el-form-item>
+
+      <el-form-item label="关键词">
+        <el-input id="keyword" v-model="keyword" required placeholder="请输入关键词"/>
       </el-form-item>
 
       <el-form-item label="对应好句">
@@ -135,7 +152,7 @@ function toBackPage() {
 
       <el-form-item label="歌曲文件">
         <el-upload
-            v-model:file-list="imageFileList"
+            v-model:file-list="musicFileList"
             :limit="1"
             :on-change="handleMusicChange"
             :on-exceed="handleExceed"
@@ -155,7 +172,7 @@ function toBackPage() {
 
       <el-form-item label="歌词文件">
         <el-upload
-            v-model:file-list="imageFileList"
+            v-model:file-list="lrcFileList"
             :limit="1"
             :on-change="handleLrcChange"
             :on-exceed="handleExceed"
@@ -182,7 +199,6 @@ function toBackPage() {
     </el-form>
   </el-main>
 </template>
-
 
 <style scoped>
 .create-store-title {

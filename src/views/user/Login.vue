@@ -40,10 +40,7 @@ function handleLogin() {
       userInfo().then(res => {
         sessionStorage.setItem('name', res.data.result.name)
         sessionStorage.setItem('role', res.data.result.role)
-        if (res.data.result.role === 'STAFF') {
-          sessionStorage.setItem('storeId', res.data.result.storeId)
-        }
-        router.push({path: "/allStore"})
+        router.push({path: "/MusicPlayer"})
       })
     } else if (res.data.code === '400') {
       ElMessage({

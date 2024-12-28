@@ -27,7 +27,7 @@ const router = createRouter({
             {
                 path: '/musicPlayer',
                 name: 'musicPlayer',
-                component: () => import('../views/music/MusicPlayer.vue'),
+                component: () => import('../views/music/MusicPlaysder.vue'),
                 meta: {title: '推歌主页'}
             },
             {

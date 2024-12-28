@@ -7,6 +7,7 @@ type MusicInfo = {
     musicUrl:string,//mp3
     lrcUrl:string,//歌词文件
     imgUrl:string,//专辑封面
+    keyword:string,
 }
 
 type CollectionInfo = {
@@ -19,7 +20,7 @@ type CollectionInfo = {
 
 // 上传音乐信息
 export const createMusic = (musicInfo: MusicInfo) => {
-    return axios.post(`${MUSIC_MODULE}/`, musicInfo,
+    return axios.post(`${MUSIC_MODULE}/create`, musicInfo,
         {headers: {'Content-Type': 'application/json'}})
         .then(res => {
             return res
@@ -44,7 +45,7 @@ export const getMusic = () => {
 
 // 添加收藏信息
 export const addCollection = (collectionInfo: CollectionInfo) => {
-    return axios.post(`${MUSIC_MODULE}/`, collectionInfo,
+    return axios.post(`${MUSIC_MODULE}/collection`, collectionInfo,
         {headers: {'Content-Type': 'application/json'}})
         .then(res => {
             return res
@@ -53,7 +54,7 @@ export const addCollection = (collectionInfo: CollectionInfo) => {
 
 // 获取全部收藏信息
 export const getCollectionInfo = () => {
-    return axios.get(`${MUSIC_MODULE}/all`, )
+    return axios.get(`${MUSIC_MODULE}/collection/all`, )
         .then(res => {
             return res
         })
@@ -61,7 +62,7 @@ export const getCollectionInfo = () => {
 
 // 根据收藏ID获取收藏信息,包括音乐名、
 export const getCollectionById = (collectionId: number) => {
-    return axios.get(`${MUSIC_MODULE}/${collectionId}`)
+    return axios.get(`${MUSIC_MODULE}/collection/${collectionId}`)
         .then(res => {
             return res
         })
