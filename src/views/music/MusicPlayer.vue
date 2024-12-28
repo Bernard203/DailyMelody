@@ -42,7 +42,7 @@
               <span class="heart-icon">♥</span>
             </button>
             <button class="play-button" @click="togglePlay">
-              {{ isPlaying ? '暂停' : '播放' }}
+              {{ isPlaying ? '||' : '▶' }}
             </button>
           </div>
 
@@ -125,7 +125,7 @@ export default defineComponent({
           .filter((line): line is Lyric => line !== null)
           .sort((a, b) => a.time - b.time)
     })
-
+    const background = ref('/images/background.jpeg')
     // 计算进度百分比
     const progress = computed(() => {
       return (currentTime.value / duration.value) * 100 || 0
@@ -133,7 +133,7 @@ export default defineComponent({
 
     // 背景样式
     const backgroundStyle = computed(() => ({
-      backgroundImage: `url(${currentSong.value.cover})`,
+      backgroundImage: `url(${background.value})`,
       backgroundSize: 'cover',
       backgroundPosition: 'center'
     }))

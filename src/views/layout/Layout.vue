@@ -43,7 +43,7 @@
           <!-- 播放控制按钮 -->
           <div class="control-buttons">
             <button class="play-button" @click="togglePlay">
-              {{ isPlaying ? '暂停' : '播放' }}
+              {{ isPlaying ? '||' : '▶' }}
             </button>
           </div>
         </div>
