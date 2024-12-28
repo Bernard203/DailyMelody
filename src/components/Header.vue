@@ -2,7 +2,7 @@
 import { computed, ref } from "vue";
 import { ElButton, ElDialog, ElTag, ElMessage, ElMessageBox } from 'element-plus';
 import { router } from '../router';
-import { SwitchButton } from "@element-plus/icons-vue"; // 图标
+import { SwitchButton,User } from "@element-plus/icons-vue"; // 图标
 
 // 控制弹窗显示与隐藏的状态
 const dialogVisible = ref(false);
@@ -50,6 +50,13 @@ function logout() {
 
       <h3 class="hello-text">今天好，{{ name }}</h3>
 
+      <el-col :span="1" class="header-icon">
+        <a @click="logout">
+          <el-icon :size="35" color="white">
+            <User />
+          </el-icon>
+        </a>
+      </el-col>
       <el-col :span="1" class="header-icon">
         <a @click="logout">
           <el-icon :size="35" color="white">

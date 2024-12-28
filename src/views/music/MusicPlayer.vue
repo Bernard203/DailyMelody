@@ -2,7 +2,13 @@
   <div class="layout" :style="backgroundStyle">
     <div class="overlay"></div>
     <header class ="header">
+      <el-drawer
+          v-model="drawer"
+          title="我的信息"
+          :direction="'ltr'"
+      >
 
+      </el-drawer>
       <el-header class="custom-header" height="20">
         <el-row :gutter="20">
 
@@ -12,13 +18,25 @@
           <el-col :span="12"></el-col>
 
 <!--          <h3 class="hello-text">今天好，{{ name }}</h3>-->
+          <el-col :span="1" class="header-icon">
+            <router-link to="/favouriteSongs" v-slot="{navigate}">
+              <el-icon @click="navigate" :size="35" color="white" >
+                <Document />
+              </el-icon>
+            </router-link>
+          </el-col>
+          <el-col :span="1" class="header-icon">
+              <el-icon @click="HandleDrawer" :size="35" color="white" >
+                <User />
+              </el-icon>
+          </el-col>
 
           <el-col :span="1" class="header-icon">
-<!--            <a @click="logout">-->
+            <a @click="logout">
               <el-icon :size="35" color="white">
                 <SwitchButton />
               </el-icon>
-<!--            </a>-->
+            </a>
           </el-col>
 
         </el-row>
@@ -92,15 +110,17 @@
 <script lang="ts">
 import { defineComponent, ref, computed, onMounted, watch } from 'vue'
 import {addCollection} from'../../api/Music.ts'
-import {SwitchButton} from "@element-plus/icons-vue";
+import {User, Document, SwitchButton} from "@element-plus/icons-vue"
+import {router} from "../../router";   //图标
 interface Lyric {
   time: number
   text: string
 }
 export default defineComponent({
   name: 'Layout',
-  components: {SwitchButton},
+  components: {SwitchButton,User,Document},
   setup() {
+    const drawer = ref(false)
     const audioPlayer = ref<HTMLAudioElement | null>(null)
     const isPlaying = ref(false)
     const currentTime = ref(0)
@@ -156,6 +176,10 @@ export default defineComponent({
     const progress = computed(() => {
       return (currentTime.value / duration.value) * 100 || 0
     })
+
+    function HandleDrawer(){
+      drawer.value = true;
+    }
 
     // 背景样式
     const backgroundStyle = computed(() => ({
@@ -253,7 +277,24 @@ export default defineComponent({
       console.error('音频加载错误:', error)
       isPlaying.value = false
     }
-
+    function logout() {
+      ElMessageBox.confirm(
+          '是否要退出登录？',
+          '提示',
+          {
+            customClass: "customDialog",
+            confirmButtonText: '是',
+            cancelButtonText: '否',
+            type: "warning",
+            showClose: false,
+            roundButton: true,
+            center: true
+          }
+      ).then(() => {
+        sessionStorage.setItem('token', '')
+        router.push({path: "/login"})
+      })
+    }
     // 在 setup 函数中添加收藏相关逻辑
     const isFavorite = ref(false)
     const thought = ref('')
@@ -279,7 +320,6 @@ export default defineComponent({
           }
         })
       }
-      // 这里可以添加收藏/取消收藏的业务逻辑
     }
 
 
@@ -294,12 +334,18 @@ export default defineComponent({
       parsedLyrics,
       currentQuote,
       backgroundStyle,
+      drawer,
+      logout,
       togglePlay,
       onTimeUpdate,
       onLoadedMetadata,
       onEnded,
       onError,
       seek,
+      User,
+      Document,
+      SwitchButton,
+      HandleDrawer,
       formatTime,
       isFavorite,
       thought,
@@ -317,6 +363,14 @@ export default defineComponent({
   position: relative;
   overflow: hidden;
 }
+.header {
+  position: absolute; /* 使header可以从顶部浮动 */
+  top: 30px; /* 距离顶部10px */
+  left: 0;
+  right: 0;
+  z-index: 2; /* 确保header在最上层 */
+}
+
 
 .overlay {
   position: absolute;
