@@ -2,7 +2,7 @@
 import { computed, ref } from 'vue'
 import { router } from '../../router'
 import { Back, UploadFilled } from "@element-plus/icons-vue"
-import { createMusic } from '../../api/Music.ts'
+import { createMusic } from '../../api/music.ts'
 import { uploadImage } from "../../api/tools.ts"
 
 // 输入框值（需要前端阻拦不合法输入）

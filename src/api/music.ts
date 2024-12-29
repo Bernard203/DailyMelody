@@ -11,11 +11,15 @@ type MusicInfo = {
 }
 
 type CollectionInfo = {
-    musicName:string,//歌名
+    musicId:number,
+    musicName:string,
     date:string,//日期yyyy-mm-dd
     festival?:string,//特殊节日（可空）
     thought?:string,//感想（可空）
     imgUrl:string,
+    sunSet:string,
+    sunRise:string,
+    sentence:string,
 }
 
 // 上传音乐信息

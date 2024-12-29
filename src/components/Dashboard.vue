@@ -116,7 +116,7 @@ function updatePassword() {
   </el-form>
 
   <div class="card-header">
-    <span>修改密码</span>
+    <span></span>
     <el-button @click="updatePassword" :disabled="changeDisabled">修改密码</el-button>
   </div>
   </el-drawer>
@@ -125,22 +125,15 @@ function updatePassword() {
 
 <style scoped>
 /* Drawer 样式 */
-/deep/.el-drawer.ltr {
-  background: #6aabc5;
-}
 
 
-/* 隐藏 Drawer 头部 */
-.el-drawer__header {
-  display: none !important; /* 隐藏标题栏 */
-}
 
 /* 修改字体颜色 */
 .avatar-text {
   font-size: x-large !important;
   font-weight: bolder !important;
   padding-right: 40px !important;
-  color: #254063 !important; /* 偏灰的深蓝色 */
+  color: #eae6e0 !important; /* 偏灰的深蓝色 */
 }
 
 /* 弱化线条，修改表格描述的样式 */
@@ -148,13 +141,9 @@ function updatePassword() {
   border: none !important; /* 去除边框 */
 }
 
-.el-divider {
-  margin: 15px 0 !important;
-}
-
 /* 表单项标签颜色 */
 .el-form label {
-  color: #113c71 !important; /* 偏灰的深蓝色 */
+  color: #f1eae1 !important; /* 偏灰的深蓝色 */
 }
 
 /* 修改按钮样式 */
@@ -164,16 +153,7 @@ function updatePassword() {
   justify-content: space-between !important;
 }
 
-.card-header el-button {
-  background-color: #2a5caa !important;
-  color: white !important;
-  border: none !important;
-  transition: background-color 0.3s !important;
-}
 
-.card-header el-button:hover {
-  background-color: #1a4d80 !important;
-}
 
 .avatar-area {
   display: flex !important;

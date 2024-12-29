@@ -45,6 +45,12 @@ const router = createRouter({
                 component: () => import('../views/music/FavoriteList.vue'),
                 meta: {title: '收藏歌单'}
             },
+            {
+                path: '/musicDetail/:musicId',
+                name: 'musicDetail',
+                component: () => import('../views/music/MusicDetail.vue'),
+                meta: {title: '播放特定歌曲'}
+            },
         ]
     }, {
         path: '/404',

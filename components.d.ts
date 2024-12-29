@@ -16,8 +16,10 @@ declare module 'vue' {
     ElCard: typeof import('element-plus/es')['ElCard']
     ElCol: typeof import('element-plus/es')['ElCol']
     ElContainer: typeof import('element-plus/es')['ElContainer']
+    ElDescription: typeof import('element-plus/es')['ElDescription']
     ElDescriptions: typeof import('element-plus/es')['ElDescriptions']
     ElDescriptionsItem: typeof import('element-plus/es')['ElDescriptionsItem']
+    ElDialog: typeof import('element-plus/es')['ElDialog']
     ElDivider: typeof import('element-plus/es')['ElDivider']
     ElDrawer: typeof import('element-plus/es')['ElDrawer']
     ElForm: typeof import('element-plus/es')['ElForm']
@@ -39,6 +41,7 @@ declare module 'vue' {
     Header: typeof import('./src/components/Header.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Weather: typeof import('./src/components/Weather.vue')['default']
   }
   export interface ComponentCustomProperties {
     vLoading: typeof import('element-plus/es')['ElLoadingDirective']

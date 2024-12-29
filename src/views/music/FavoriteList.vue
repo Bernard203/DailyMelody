@@ -1,167 +1,84 @@
 <script setup lang="ts">
-import {ref} from "vue"
-import {getCollectionInfo} from "../../api/Music.ts"
+import { ref } from "vue";
+import { getCollectionInfo } from "../../api/music.ts";
 import CollectionItem from "../../components/CollectionItem.vue";
 
-const collectionList = ref()
+// 定义  接口
+// 定义响应式变量 collectionList
+const collectionList = ref([]);
 
-// 获取列表
+// 获取数据并赋值
 getCollectionInfo().then(res => {
-  console.log(res)
-  collectionList.value = res.data.result
-})
-
+  console.log(res); // 确保此处输出了期望的结果
+  collectionList.value = res.data; // 假设 res.data 是一个数组
+});
 </script>
-
-
 <template>
-  <el-main>
-    <div class="store-item-list">
-      <CollectionItem v-for="collectionVO in collectionList" :collectionId="collectionVO.id"/>
+  <el-main class="paper-list-page">
+    <el-header class="custom-header" height="20">
+      <router-link to="/MusicPlayer" v-slot="{ navigate }">
+        <el-text @click="navigate" class="text">
+          ♪继续听歌♪
+        </el-text>
+      </router-link>
+    </el-header>
+
+    <div class="paper-list">
+      <CollectionItem
+          v-for="collectionVO in collectionList"
+          :collectionId="collectionVO.id"
+          :key="collectionVO.id"
+      />
     </div>
   </el-main>
 </template>
-
-
 <style scoped>
-.add-store-button {
-  margin-left: 30px;
-}
-
-.store-item-list {
+.paper-list-page {
+  background-image: url("../../../public/images/background.jpeg");
+  background-size: cover; /* 背景图片覆盖整个容器 */
+  background-position: center; /* 居中对齐背景 */
+  padding: 20px;
+  align-items: center;
   display: flex;
-  padding: 2px;
-  flex-flow: wrap;
-  justify-content: center;
-  align-content: start;
+  flex-direction: column;
+  overflow-y: auto; /* 增加垂直滚动条 */
+  height: calc(100vh - 60px); /* 设置最大高度，确保出现滚动条 */
+
+  /* 添加高斯模糊效果 */
+  position: relative;
+  isolation: isolate; /* 确保 backdrop-filter 只作用于当前容器 */
 }
+
+.paper-list-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw; /* 遮罩层宽度覆盖整个视口 */
+  height: 100vh; /* 遮罩层高度覆盖整个视口 */
+  background: rgba(53, 50, 50, 0.2); /* 半透明白色遮罩 */
+  backdrop-filter: blur(10px); /* 高斯模糊 */
+  z-index: -1; /* 置于背景图片上方但低于内容 */
+}
+
+.custom-header {
+  padding: 15px;
+  text-align: center;
+  z-index: 1; /* 确保内容高于背景模糊层 */
+}
+
+.text {
+  font-size: 20px; /* 增大字体 */
+  font-weight: bold;
+  color: #445f83; /* 深蓝色 */
+  text-decoration: underline; /* 添加下划线 */
+  cursor: pointer;
+}
+
+.text:hover {
+  color: #e6e5db; /* 悬停时的颜色变化 */
+}
+
+
+
 </style>
-
-
-<!--test-->
-<!--<script setup lang="ts">-->
-<!--import { ref, onMounted } from "vue";-->
-
-<!--type FavoriteItem = {-->
-<!--  id: number;-->
-<!--  musicName: string;-->
-<!--  sentence: string;-->
-<!--  date: string;-->
-<!--  festival?: string; // 可选属性-->
-<!--  thought?: string;  // 可选属性-->
-<!--  imgUrl: string;-->
-<!--};-->
-
-<!--// 测试用默认收藏信息-->
-<!--const defaultFavoriteList = [-->
-<!--  {-->
-<!--    id: 1,-->
-<!--    musicName: "测试歌曲1",-->
-<!--    sentence: "这是测试歌曲的优美歌词片段。",-->
-<!--    date: "2024-12-23",-->
-<!--    festival: "圣诞节",-->
-<!--    thought: "这首歌让我想起了小时候的快乐时光。",-->
-<!--    imgUrl: "https://via.placeholder.com/150", // 使用占位图片-->
-<!--  },-->
-<!--  {-->
-<!--    id: 2,-->
-<!--    musicName: "测试歌曲2",-->
-<!--    sentence: "测试歌词片段2，充满了希望。",-->
-<!--    date: "2024-11-30",-->
-<!--    imgUrl: "https://via.placeholder.com/150", // 使用占位图片-->
-<!--  },-->
-<!--];-->
-
-<!--const favoriteList = ref<FavoriteItem[]>([]);-->
-<!--const loading = ref(false);-->
-<!--const error = ref("");-->
-
-<!--// 模拟数据加载-->
-<!--function fetchFavoriteList() {-->
-<!--  loading.value = true;-->
-<!--  setTimeout(() => {-->
-<!--        favoriteList.value = defaultFavoriteList; // 加载默认数据-->
-<!--        loading.value = false;-->
-<!--      },-->
-<!--      500); // 模拟网络延迟-->
-<!--}-->
-
-<!--onMounted(() => {-->
-<!--  fetchFavoriteList();-->
-<!--});-->
-<!--</script>-->
-
-<!--<template>-->
-<!--  <el-main v-loading="loading">-->
-<!--    <h1 class="favorite-title">我的收藏歌单（测试模式）</h1>-->
-
-<!--    <el-alert-->
-<!--        v-if="error"-->
-<!--        :title="error"-->
-<!--        type="error"-->
-<!--        show-icon-->
-<!--        closable-->
-<!--        class="error-alert"-->
-<!--    />-->
-
-<!--    &lt;!&ndash;    <el-loading v-if="loading" :fullscreen="true" />&ndash;&gt;-->
-
-<!--    <div v-if="!loading && !error" class="favorite-container">-->
-<!--      <el-row :gutter="20">-->
-<!--        <el-col-->
-<!--            v-for="item in favoriteList"-->
-<!--            :key="item.id"-->
-<!--            :xs="24"-->
-<!--            :sm="12"-->
-<!--            :md="8"-->
-<!--            :lg="6"-->
-<!--        >-->
-<!--          <el-card-->
-<!--              shadow="always"-->
-<!--              class="favorite-card"-->
-<!--              :header="item.musicName"-->
-<!--          >-->
-<!--            <img :src="item.imgUrl" class="album-cover" alt="专辑封面" />-->
-<!--            <p class="favorite-sentence">{{ item.sentence }}</p>-->
-<!--            <p class="favorite-date">收藏日期：{{ item.date }}</p>-->
-<!--            <p v-if="item.festival" class="favorite-festival">-->
-<!--              节日：{{ item.festival }}-->
-<!--            </p>-->
-<!--            <p v-if="item.thought" class="favorite-thought">-->
-<!--              感想：{{ item.thought }}-->
-<!--            </p>-->
-<!--          </el-card>-->
-<!--        </el-col>-->
-<!--      </el-row>-->
-<!--    </div>-->
-<!--  </el-main>-->
-<!--</template>-->
-
-<!--<style scoped>-->
-<!--.favorite-title {-->
-<!--  text-align: center;-->
-<!--  margin: 20px 0;-->
-<!--}-->
-
-<!--.favorite-container {-->
-<!--  padding: 20px;-->
-<!--}-->
-
-<!--.favorite-card {-->
-<!--  margin-bottom: 20px;-->
-<!--}-->
-
-<!--.album-cover {-->
-<!--  width: 100%;-->
-<!--  height: 200px;-->
-<!--  object-fit: cover;-->
-<!--  margin-bottom: 10px;-->
-<!--}-->
-
-<!--.favorite-sentence,-->
-<!--.favorite-date,-->
-<!--.favorite-festival,-->
-<!--.favorite-thought {-->
-<!--  margin: 5px 0;-->
-<!--}-->
-<!--</style>-->

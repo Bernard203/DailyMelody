@@ -11,6 +11,14 @@ html, body {
     padding: 0;
     height: 100%;
 }
+.el-dialog {
+    border-radius: 10px !important;
+    background: linear-gradient(to bottom, rgba(114, 126, 165, 0.8), rgba(94, 119, 165, 0.8)) !important;
+    padding: 20px !important;
+    height:400px !important;
+    width:300px !important;
+}
+
 /* 1. el-drawer 样式 */
 .el-drawer {
     background: linear-gradient(to bottom, rgba(114, 134, 165, 0.6), rgba(216, 205, 192, 0.6)) !important; /* 渐变背景 */
@@ -75,6 +83,36 @@ html, body {
     --el-input-focus-border-color: red !important;
 }
 
+
+/* el-input 样式 */
+ .el-input {
+     background: rgba(255, 255, 255, 0.8) !important; /* 白色半透明 */
+     border-radius: 10px !important; /* 圆角 */
+     color: #003366 !important; /* 输入文字颜色为深蓝色 */
+     padding: 10px !important;
+ }
+
+
+/* el-description 样式 */
+.el-form {
+    background: transparent !important; /* 背景透明 */
+    font-size: 16px !important; /* 字体大小 */
+    color: #003366 !important; /* 描述文字颜色为深蓝色 */
+    margin-top: 20px !important;
+}
+
+/* el-description-item 样式 */
+.el-form .el-form__label {
+    background-color: #003366 !important; /* 深蓝色背景 */
+    color: #ffffff !important; /* 文字为白色 */
+    padding: 5px 10px !important; /* 内边距 */
+    border-radius: 5px !important; /* 圆角 */
+}
+
+.el-form .el-description__content {
+    color: #003366 !important; /* 展示文字颜色为深蓝色 */
+    font-weight: bold !important; /* 加粗 */
+}
 #app {
     margin: 0;
     padding: 0;

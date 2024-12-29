@@ -2,44 +2,12 @@
   <div class="layout" :style="backgroundStyle">
     <div class="overlay"></div>
     <header class ="header">
-      <Dashboard v-model:drawer="drawerVisible" />
-      <Weather v-model:dialog="dialogVisible" />
       <el-header class="custom-header" height="20">
-        <el-row :gutter="20">
-
-          <el-col :span="4" class="header-icon">
-          </el-col>
-
-          <el-col :span="12"></el-col>
-
-          <!--          <h3 class="hello-text">今天好，{{ name }}</h3>-->
-          <el-col :span="1" class="header-icon">
-            <el-icon @click="HandleDialog" :size="35" color="white" >
-              <Sunny />
-            </el-icon>
-          </el-col>
-          <el-col :span="1" class="header-icon">
-            <router-link to="/favouriteSongs" v-slot="{navigate}">
-              <el-icon @click="navigate" :size="35" color="white" >
-                <Document />
-              </el-icon>
-            </router-link>
-          </el-col>
-          <el-col :span="1" class="header-icon">
-            <el-icon @click="HandleDrawer" :size="35" color="white" >
-              <User />
-            </el-icon>
-          </el-col>
-
-          <el-col :span="1" class="header-icon">
-            <a @click="logout">
-              <el-icon :size="35" color="white">
-                <SwitchButton />
-              </el-icon>
-            </a>
-          </el-col>
-
-        </el-row>
+        <router-link to="/MusicPlayer" v-slot="{ navigate }">
+          <el-text @click="navigate" class="text">
+            回到主页
+          </el-text>
+        </router-link>
       </el-header>
     </header>
     <main class="main-content">
@@ -77,7 +45,7 @@
           <div class="control-buttons">
             <el-input
                 v-model="thought"
-                placeholder="我的感想"
+                placeholder="你已经收藏了该歌曲哦"
                 class = "favourite">sd</el-input>
             <button class="favorite-button" @click="toggleFavorite" :class="{ 'is-favorite': isFavorite }">
               <span class="heart-icon">♥</span>
@@ -88,7 +56,7 @@
           </div>
 
           <div class="quote-container">
-            <p class="quote">{{ currentSong.sentence }}</p>
+            <p class="quote">{{ currentSong.sentence}}</p>
           </div>
         </div>
       </div>
@@ -111,9 +79,10 @@
 import Dashboard from '../../components/Dashboard.vue'
 import Weather from '../../components/Weather.vue'
 import { defineComponent, ref, computed, onMounted, watch } from 'vue'
-import {addCollection,getMusic} from '../../api/music.ts'
+import {getMusicById} from '../../api/music.ts'
 import {User,Sunny, Document, SwitchButton, UserFilled} from "@element-plus/icons-vue"
-import {router} from "../../router";
+import {useRouter} from "vue-router";
+
 interface Lyric {
   time: number
   text: string
@@ -142,14 +111,9 @@ export default defineComponent({
     const currentTime = ref(0)
     const duration = ref(0)
     const currentLyricIndex = ref(0)
-    const quotes = [
-      "岁月漫长，然而值得等待",
-      "生命的意义不在于活了多久，而在于经历了什么",
-      "愿你的未来，既有诗也有远方",
-      "把喜欢的事情做好，就是成功"
-    ]
-    const currentQuote = ref(quotes[Math.floor(Math.random() * quotes.length)])
-
+    const router = useRouter()
+    const musicId = router.currentRoute.value.params.musicId
+    console.log( router.currentRoute)
     const currentSong = ref<MusicInfo>({
       name: '空飛ぶ猫',
       sentence: '岁月漫长，值得等待',
@@ -159,29 +123,19 @@ export default defineComponent({
       festival:'初一',
       date:"2014-1"
     })
-    getMusicInfo()
-    const musicId = ref(0)
-    const sunrise = ref('')
-    const sunset = ref('')
-    function getMusicInfo() {
-      getMusic().then(res => {
-        console.log(res);
-        currentSong.value.date = res.data.time;
-        currentSong.value.name = res.data.musicInfo.name;
-        currentSong.value.sentence = res.data.musicInfo.sentence;
-        currentSong.value.musicUrl = res.data.musicInfo.musicUrl;
-        currentSong.value.lrcUrl = res.data.musicInfo.lrcUrl;
-        currentSong.value.imgUrl = res.data.musicInfo.imgUrl;
-        musicId.value = res.data.musicInfo.id;
-        sunrise.value = res.data.weatherInfo.sunrise;
-        sunset.value = res.data.weatherInfo.sunset;
-        currentSong.value.festival = res.data.musicInfo.festival;
-      })
-    }
+    getMusicById(Number(musicId)).then(res => {
+      console.log(res);
+      currentSong.value.name = res.data.name;
+      currentSong.value.sentence = res.data.sentence;
+      currentSong.value.musicUrl = res.data.musicUrl;
+      currentSong.value.lrcUrl = res.data.lrcUrl;
+      currentSong.value.imgUrl = res.data.imgUrl;
+    })
 
     // 解析LRC歌词
     const parsedLyrics = computed(async () => {
       const response = await fetch(currentSong.value.lrcUrl)
+      console.log(response);
       const lyrics = await response.text()
       const lines = lyrics.split('\n')
       const timeRegex = /\[(\d{2}):(\d{2})\.(\d{2,3})\]/
@@ -299,6 +253,7 @@ export default defineComponent({
     // 修改音频初始化和错误处理
     const initAudio = () => {
       if (!audioPlayer.value) return
+
       // 设置初始音频源
       const testAudio = '/test.mp3' // 确保这个文件存在
       currentSong.value = {
@@ -383,39 +338,9 @@ export default defineComponent({
       })
     }
     // 在 setup 函数中添加收藏相关逻辑
-    const isFavorite = ref(false)
+    const isFavorite = ref(true)
     const thought = ref('')
-    const toggleFavorite = () => {
-      if(!isFavorite.value){
-        const payload = {
-          musicName:currentSong.value.name,//对应歌ID
-          date:currentSong.value.date,//日期
-          festival:currentSong.value.festival,//特殊节日（可空）
-          thought:thought.value,
-          imgUrl:currentSong.value.imgUrl,
-          musicId:musicId.value,
-          sentence:currentSong.value.sentence,
-          sunRise:sunrise.value,
-          sunSet:sunset.value
-        };
-        console.log(payload)
-        console.log("发了！")
-        addCollection(payload).then(res => {
-          console.log(res);
-          if (res.status==200) {
-            console.log(res);
-            thought.value = "您已进行过今日记录";
-            isFavorite.value = true;
-          } else if (res.data.code === '400') {
-            ElMessage({
-              message: res.data.msg,
-              type: 'error',
-              center: true,
-            })
-          }
-        })
-      }
-    }
+    const toggleFavorite = () => {}
     const drawerVisible = ref(false); // 控制抽屉显示状态
 
     const HandleDrawer = () => {
@@ -440,10 +365,11 @@ export default defineComponent({
       currentSong,
       currentLyricIndex,
       parsedLyrics,
-      currentQuote,
       backgroundStyle,
       drawer,
       logout,
+      useRouter,
+      router,
       togglePlay,
       onTimeUpdate,
       onLoadedMetadata,
@@ -571,7 +497,7 @@ export default defineComponent({
 .song-title {
   font-size: 28px;
   margin: 0;
-  color: #fff;
+  color: #f1e9e9;
 }
 .favourite {
   border-radius: 10px;          /* 圆角效果 */
@@ -607,7 +533,7 @@ export default defineComponent({
   font-size: 16px;
   line-height: 1.6;
   font-style: italic;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(243, 235, 235, 0.9);
   margin: 0;
 }
 
@@ -626,6 +552,21 @@ export default defineComponent({
   justify-content: center;
   gap: 20px; /* 按钮之间的间距 */
   margin-top: 20px;
+}
+.custom-header {
+  padding: 15px;
+  text-align: center;
+}
+
+.text {
+  font-size: 20px; /* 增大字体 */
+  font-weight: bold;
+  color: #1c314c; /* 深蓝色 */
+  text-decoration: underline; /* 添加下划线 */
+  cursor: pointer;
+}
+.text:hover {
+  color: #e6e5db; /* 悬停时的颜色变化 */
 }
 
 .play-button {
