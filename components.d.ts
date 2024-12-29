@@ -7,6 +7,7 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    CollectionItem: typeof import('./src/components/CollectionItem.vue')['default']
     CommentItem: typeof import('./src/components/CommentItem.vue')['default']
     Dashboard: typeof import('./src/components/Dashboard.vue')['default']
     ElAlert: typeof import('element-plus/es')['ElAlert']

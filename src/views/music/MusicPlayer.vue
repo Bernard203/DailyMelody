@@ -148,7 +148,7 @@ export default defineComponent({
       name: '空飛ぶ猫',
       sentence: '岁月漫长，值得等待',
       musicUrl: '/test.mp3',
-      lrcUrl: '/test.lrc',
+      lrcUrl: 'images/test.lrc',
       imgUrl: '/test.jpg',
       festival:'初一',
       date:"2014-1"
@@ -160,7 +160,7 @@ export default defineComponent({
         currentSong.value.name = res.data.name;
         currentSong.value.sentence = res.data.sentence;
         currentSong.value.musicUrl = res.data.musicUrl;
-        currentSong.value.lrcUrl = res.data.lrcUrl;
+        currentSong.value.lrcUrl = "images/test.lrc";
         currentSong.value.imgUrl = res.data.imgUrl;
         currentSong.value.festival = res.data.festival;
         currentSong.value.date = res.data.date;
@@ -384,9 +384,11 @@ export default defineComponent({
           thought:thought.value,
           imgUrl:currentSong.value.imgUrl,
         };
+        console.log("发了！")
         addCollection(payload).then(res => {
           if (res.data.code === '000') {
-            thought.value = "";
+            console.log(res);
+            thought.value = "您已进行过今日记录";
             isFavorite.value = true;
           } else if (res.data.code === '400') {
             ElMessage({
