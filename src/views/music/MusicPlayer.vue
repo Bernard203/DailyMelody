@@ -89,15 +89,6 @@
       </div>
     </main>
 
-    <audio
-        ref="audioPlayer"
-        :src="currentSong.url"
-        @timeupdate="onTimeUpdate"
-        @loadedmetadata="onLoadedMetadata"
-        @ended="onEnded"
-        @error="onError"
-        preload="auto"
-    ></audio>
   </div>
 </template>
 

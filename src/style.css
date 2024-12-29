@@ -11,6 +11,69 @@ html, body {
     padding: 0;
     height: 100%;
 }
+/* 1. el-drawer 样式 */
+.el-drawer {
+    background: linear-gradient(to bottom, rgba(90, 90, 143, 0.6), rgba(78, 104, 115, 0.6)) !important; /* 渐变背景 */
+    border-radius: 8px !important; /* 圆角 */
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 10px !important; /* 添加阴影 */
+}
+
+.el-drawer__header {
+    display: none !important; /* 隐藏标题栏 */
+}
+
+.el-drawer__close-btn {
+    display: none !important; /* 隐藏叉号 */
+}
+
+/* 2. el-button 样式 */
+.el-button {
+    background-color: #283a57 !important;
+    color: white !important;
+    border: none !important;
+    padding: 10px 20px !important;
+    border-radius: 4px !important; /* 圆角按钮 */
+    transition: background-color 0.3s ease !important;
+}
+
+.el-button:hover {
+    background-color: #50577c !important;
+}
+
+/* 3. el-descriptions 样式 */
+.el-descriptions {
+    border: none !important; /* 去除外框 */
+    margin: 15px 0 !important;
+}
+
+.el-descriptions__item {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important; /* 添加弱化线条 */
+    padding: 10px 0 !important;
+}
+
+.el-descriptions__item:last-child {
+    border-bottom: none !important; /* 最后一项没有底边 */
+}
+
+/* 4. 字体和文字样式 */
+.avatar-text {
+    font-size: 18px !important;
+    font-weight: bolder !important;
+    color: #3e4a59 !important; /* 偏灰的深蓝色 */
+}
+
+.el-form label {
+    color: #3e4a59 !important; /* 偏灰的深蓝色 */
+}
+
+/* 5. 错误提示样式 */
+.error-warn {
+    color: red !important;
+}
+
+.error-warn-input {
+    --el-input-focus-border-color: red !important;
+}
 
 #app {
     margin: 0;
