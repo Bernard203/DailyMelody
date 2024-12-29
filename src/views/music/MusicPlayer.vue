@@ -42,15 +42,15 @@
         <!-- 左侧封面区域 -->
         <div class="cover-section">
           <div class="cover-art" :class="{ 'is-playing': isPlaying }">
-            <img :src="currentSong.cover" alt="封面" class="cover-image">
+            <img :src="currentSong.imgUrl" alt="封面" class="cover-image">
           </div>
         </div>
 
         <!-- 右侧控制和语录区域 -->
         <div class="player-controls">
           <div class="song-info">
-            <h3 class="song-title">{{ currentSong.title }}</h3>
-            <p class="artist">{{ currentSong.artist }}</p>
+            <h3 class="song-title">{{ currentSong.name }}</h3>
+            <p class="artist">{{ currentSong.sentence }}</p>
           </div>
 
           <div class="lyrics-container" ref="lyricsContainer">
@@ -91,7 +91,7 @@
 
     <audio
         ref="audioPlayer"
-        :src="currentSong.url"
+        :src="currentSong.musicUrl"
         @timeupdate="onTimeUpdate"
         @loadedmetadata="onLoadedMetadata"
         @ended="onEnded"
@@ -105,12 +105,21 @@
 <script lang="ts">
 import Dashboard from '../../components/Dashboard.vue'
 import { defineComponent, ref, computed, onMounted, watch } from 'vue'
-import {addCollection} from'../../api/Music.ts'
+import {addCollection,getMusic} from'../../api/Music.ts'
 import {User, Document, SwitchButton, UserFilled} from "@element-plus/icons-vue"
-import {router} from "../../router";   //图标
+import {router} from "../../router";
 interface Lyric {
   time: number
   text: string
+}
+interface MusicInfo {
+  name: string      // 歌名
+  sentence: string  // 好句
+  musicUrl: string  // mp3
+  lrcUrl: string    // 歌词文件
+  imgUrl: string    // 专辑封面
+  date:string  //时间
+  festival:string
 }
 export default defineComponent({
   name: 'Layout',
@@ -135,26 +144,36 @@ export default defineComponent({
     ]
     const currentQuote = ref(quotes[Math.floor(Math.random() * quotes.length)])
 
-    const currentSong = ref({
-      url: '/public/周杰伦 - 安静.flac',  // 将音频文件放在 public 目录下
-      cover: '/images/album-cover.jpg', // 将封面图片放在 public 目录下
-      title: '空飛ぶ猫',
-      musicId:'1',
-      artist: 'ナナツカゼ',
-      date:'12.27',
-      festival:"",
-      lyrics: `[00:00.000] 作词 : ナナツカゼ
-  [00:01.000] 作曲 : ナナツカゼ
-  [00:16.750]飛び立つ前に　確かめたいことがある
-  [00:24.990]このまま君と　歩めるだろうか`
+    const currentSong = ref<MusicInfo>({
+      name: '空飛ぶ猫',
+      sentence: '岁月漫长，值得等待',
+      musicUrl: '/test.mp3',
+      lrcUrl: '/test.lrc',
+      imgUrl: '/test.jpg',
+      festival:'初一',
+      date:"2014-1"
     })
+    getMusicInfo()
+
+    function getMusicInfo() {
+      getMusic().then(res => {
+        currentSong.value.name = res.data.name;
+        currentSong.value.sentence = res.data.sentence;
+        currentSong.value.musicUrl = res.data.musicUrl;
+        currentSong.value.lrcUrl = res.data.lrcUrl;
+        currentSong.value.imgUrl = res.data.imgUrl;
+        currentSong.value.festival = res.data.festival;
+        currentSong.value.date = res.data.date;
+      })
+    }
 
     // 解析LRC歌词
-    const parsedLyrics = computed(() => {
-      const lyrics = currentSong.value.lyrics
+    const parsedLyrics = computed(async () => {
+      const response = await fetch(currentSong.value.lrcUrl)
+      console.log(response);
+      const lyrics = await response.text()
       const lines = lyrics.split('\n')
       const timeRegex = /\[(\d{2}):(\d{2})\.(\d{2,3})\]/
-
       return lines
           .map(line => {
             const match = timeRegex.exec(line)
@@ -187,19 +206,38 @@ export default defineComponent({
 
     // 播放/暂停切换
     const togglePlay = async () => {
-      if (!audioPlayer.value) return
+      if (!audioPlayer.value) {
+        console.error('找不到音频元素')
+        return
+      }
+
       try {
+        // 检查音频源是否有效
+        if (!currentSong.value.musicUrl) {
+          console.error('无效的音频源:', currentSong.value.musicUrl)
+          return
+        }
+
+        console.log('当前播放状态:', isPlaying.value)
+        console.log('音频就绪状态:', audioPlayer.value.readyState)
+
         if (isPlaying.value) {
           await audioPlayer.value.pause()
+          isPlaying.value = false
         } else {
-          await audioPlayer.value.play()
+          try {
+            await audioPlayer.value.play()
+            isPlaying.value = true
+          } catch (playError) {
+            console.error('播放失败:', playError)
+            isPlaying.value = false
+          }
         }
-        isPlaying.value = !isPlaying.value
       } catch (error) {
-        console.error('播放出错:', error)
+        console.error('播放控制错误:', error)
+        isPlaying.value = false
       }
     }
-
     // 时间更新处理
     const onTimeUpdate = () => {
       if (!audioPlayer.value) return
@@ -247,33 +285,75 @@ export default defineComponent({
       return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
     }
 
-    // 添加组件挂载时的初始化逻辑
-    onMounted(() => {
-      // 移除异步加载歌词的逻辑，改为直接使用静态数据
-      if (audioPlayer.value) {
-        audioPlayer.value.load() // 确保音频元素重新加载
+    // 修改音频初始化和错误处理
+    const initAudio = () => {
+      if (!audioPlayer.value) return
+
+      // 设置初始音频源
+      const testAudio = '/test.mp3' // 确保这个文件存在
+      currentSong.value = {
+        name: '测试音乐',
+        sentence: '测试语录',
+        musicUrl: testAudio,
+        lrcUrl: '/test.lrc',
+        imgUrl: '/test.jpg',
+        festival:'初一',
+        date:"2014-1"
       }
-      setInterval(() => {
-        const randomIndex = Math.floor(Math.random() * quotes.length)
-        currentQuote.value = quotes[randomIndex]
-      }, 10000) // 每10秒更换一次
+
+      // 预加载音频
+      audioPlayer.value.load()
+    }
+
+    onMounted(() => {
+      // 确保有初始数据
+      currentSong.value = {
+        name: '测试音乐',
+        sentence: '测试语录',
+        musicUrl: '/public/周杰伦 - 安静.flac', // 确保这个文件存在于 public 目录
+        lrcUrl: '/test.lrc',
+        imgUrl: '/test.jpg',
+        festival:'初一',
+        date:"2014-1"
+      }
+
+      if (audioPlayer.value) {
+        // 添加音频事件监听
+        audioPlayer.value.addEventListener('canplay', () => {
+          console.log('音频可以播放')
+        })
+
+        audioPlayer.value.addEventListener('error', (e) => {
+          console.error('音频错误:', e)
+        })
+
+        // 预加载音频
+        audioPlayer.value.load()
+      }
     })
 
-    // 监听播放状态变化
+    const onError = (error: Event) => {
+      console.error('音频加载错误:', error)
+      const audioElement = error.target as HTMLAudioElement
+      console.error('错误详情:', audioElement.error)
+      isPlaying.value = false
+    }
+
+    // 添加音频状态监听
     watch(isPlaying, (newValue) => {
       if (!audioPlayer.value) return
+
+      console.log('播放状态改变:', newValue)
       if (newValue) {
         audioPlayer.value.play()
+            .catch(error => {
+              console.error('播放失败:', error)
+              isPlaying.value = false
+            })
       } else {
         audioPlayer.value.pause()
       }
     })
-
-    // 添加错误处理
-    const onError = (error: Event) => {
-      console.error('音频加载错误:', error)
-      isPlaying.value = false
-    }
     function logout() {
       ElMessageBox.confirm(
           '是否要退出登录？',
@@ -298,11 +378,11 @@ export default defineComponent({
     const toggleFavorite = () => {
       if(!isFavorite.value){
         const payload = {
-          musicName:currentSong.value.title,//对应歌ID
+          musicName:currentSong.value.name,//对应歌ID
           date:currentSong.value.date,//日期
-          festival:currentSong.value.artist,//特殊节日（可空）
+          festival:currentSong.value.festival,//特殊节日（可空）
           thought:thought.value,
-          imgUrl:currentSong.value.cover,
+          imgUrl:currentSong.value.imgUrl,
         };
         addCollection(payload).then(res => {
           if (res.data.code === '000') {
@@ -349,6 +429,7 @@ export default defineComponent({
       User,
       Document,
       SwitchButton,
+      initAudio,
       formatTime,
       isFavorite,
       thought,
@@ -424,6 +505,9 @@ export default defineComponent({
   animation: rotate 20s linear infinite;
   animation-play-state: paused;
 }
+.cover-art.is-playing {
+  animation-play-state: running;
+}
 
 /* 右侧控制和语录区域 */
 .player-controls {
@@ -431,6 +515,25 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   gap: 20px;
+  min-width: 0; /* 防止内容溢出 */
+}
+.progress {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: #fff;
+  border-radius: 3px;
+  transition: width 0.1s linear;
+  z-index: 1;
+}
+
+.time {
+  position: absolute;
+  right: 0;
+  top: -25px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .song-info {

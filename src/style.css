@@ -13,7 +13,7 @@ html, body {
 }
 /* 1. el-drawer 样式 */
 .el-drawer {
-    background: linear-gradient(to bottom, rgba(90, 90, 143, 0.6), rgba(78, 104, 115, 0.6)) !important; /* 渐变背景 */
+    background: linear-gradient(to bottom, rgba(114, 134, 165, 0.6), rgba(216, 205, 192, 0.6)) !important; /* 渐变背景 */
     border-radius: 8px !important; /* 圆角 */
     box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 10px !important; /* 添加阴影 */
 }

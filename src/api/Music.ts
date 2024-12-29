@@ -12,7 +12,7 @@ type MusicInfo = {
 
 type CollectionInfo = {
     musicName:string,//歌名
-    date:string,//日期
+    date:string,//日期yyyy-mm-dd
     festival?:string,//特殊节日（可空）
     thought?:string,//感想（可空）
     imgUrl:string,
