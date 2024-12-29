@@ -145,7 +145,7 @@ function handleRegister() {
 }
 
 .bgimage {
-  background-image: url("../../../public/background.webp");
+  background-image: url("../../../public/images/background.jpeg");
 }
 
 .login-card {

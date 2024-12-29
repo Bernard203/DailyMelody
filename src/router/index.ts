@@ -18,12 +18,7 @@ const router = createRouter({
         redirect: '/login',
         component: () => import('../views/Home.vue'),
         children: [
-            {
-                path: '/dashboard',
-                name: 'Dashboard',
-                component: () => import('../views/user/Dashboard.vue'),
-                meta: {title: '个人信息'}
-            },
+
             {
                 path: '/musicPlayer',
                 name: 'musicPlayer',

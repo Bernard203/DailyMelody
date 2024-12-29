@@ -1,4 +1,15 @@
 /*一些公用的css*/
+@font-face {
+    font-family: 'ChineseFont';
+    src: url('assets/dingliesongtypeface20241217-2.ttf') format('truetype');
+}
+
+
+body {
+    font-family: 'ChineseFont', sans-serif;/* 默认英文字体 */
+}
+
+
 
 :root {
     font-family: sans-serif;

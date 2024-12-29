@@ -2,11 +2,8 @@
 import { ref } from "vue";
 import { getCollectionInfo } from "../../api/music.ts";
 import CollectionItem from "../../components/CollectionItem.vue";
-
-// 定义  接口
 // 定义响应式变量 collectionList
 const collectionList = ref([]);
-
 // 获取数据并赋值
 getCollectionInfo().then(res => {
   console.log(res); // 确保此处输出了期望的结果

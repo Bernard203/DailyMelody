@@ -486,7 +486,7 @@ export default defineComponent({
   position: absolute;
   right: 0;
   top: -25px;
-  font-size: 14px;
+  font-size: 19px;
   color: rgba(255, 255, 255, 0.9);
 }
 
