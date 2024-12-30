@@ -39,6 +39,15 @@ export const getMusicById = (musicId: number) => {
         })
 }
 
+// 根据url获取歌词
+export const getLrcByUrl = (lrcUrl: string) => {
+    return axios.get(`${MUSIC_MODULE}/lrc/${lrcUrl}`)
+        .then(res => {
+            return res
+        })
+}
+
+
 // 获取推歌
 export const getMusic = () => {
     return axios.get(`${MUSIC_MODULE}/getMusic`)

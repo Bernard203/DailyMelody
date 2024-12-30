@@ -27,6 +27,7 @@ function toMusicDetailPage(musicId: Number) {
 }
 getCollectionById(props.collectionId).then(res => {
   console.log(res)
+  musicId.value = res.data.musicId;
   name.value = res.data.musicName;
   imgUrl.value = res.data.imgUrl;
   date.value = res.data.date;
@@ -46,7 +47,7 @@ getCollectionById(props.collectionId).then(res => {
       <img :src="imgUrl" class="album-cover" alt="专辑封面" />
       <div class="card-details">
         <div class="card-row">
-          <p   @click="toMusicDetailPage(musicId + 1)"
+          <p   @click="toMusicDetailPage(musicId)"
               class="title"> 歌名 - {{ name }}</p>
           <p class="date">{{ date }}</p>
         </div>
